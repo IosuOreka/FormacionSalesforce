@@ -18,23 +18,24 @@
 18. *Set*: Implementa un Set de enteros y demuestra cómo agregar elementos únicos.
 19. *Uso de DateTime*: Escribe un programa que obtenga y muestre la fecha y hora actuales.
 20. *Calcular Edad*: Dado un Date de nacimiento, calcula la edad actual de la persona.
-21. DML Básico: Crea un nuevo Account en Salesforce usando DML.
-22. Actualización de Registro: Actualiza un Account existente cambiando su nombre.
-23. Eliminación de Registro: Elimina un registro de Contact mediante DML.
-24. Consulta SOQL: Realiza una consulta SOQL para obtener todos los Account cuyo nombre comience con "A".
-25. Operaciones SOSL: Escribe una búsqueda SOSL que encuentre registros de Account y Contact relacionados con "John".
-26. Transacciones: Usa Savepoint y Rollback para revertir cambios después de una operación DML.
-27. Bulk DML: Inserta una lista de Account en una sola transacción DML.
+21. *DML Básico*: Crea un nuevo Account en Salesforce usando DML.
+22. *Actualización de Registro*: Actualiza un Account existente cambiando su nombre.
+23. *Eliminación de Registro*: Elimina un registro de Contact mediante DML.
+24. *Consulta SOQL*: Realiza una consulta SOQL para obtener todos los Account cuyo nombre comience con "A".
+25. *Operaciones SOSL*: Escribe una búsqueda SOSL que encuentre registros de Account y Contact relacionados con "John".
+26. *Transacciones*: Usa Savepoint y Rollback para revertir cambios después de una operación DML.
+27. *Bulk DML*: Inserta una lista de Account en una sola transacción DML.
 
-TRIGGERS
+**TRIGGERS**
+28. Triggers Básicos: Crea un trigger que se active al crear un Account y lo imprima en el log.
+29. Trigger After Insert: Crea un trigger que añada un Contact automáticamente al insertar un nuevo Account.
+30. Trigger Before Update: Crea un trigger que verifique que la industria de un Account no sea null al actualizarse.
+31. Governor Limits: Crea un ejemplo donde un trigger exceda los límites de tiempo para comprender la importancia de los Governor Limits.
 
-Triggers Básicos: Crea un trigger que se active al crear un Account y lo imprima en el log.
-Trigger After Insert: Crea un trigger que añada un Contact automáticamente al insertar un nuevo Account.
-Trigger Before Update: Crea un trigger que verifique que la industria de un Account no sea null al actualizarse.
-Governor Limits: Crea un ejemplo donde un trigger exceda los límites de tiempo para comprender la importancia de los Governor Limits.
-Ejercicios de Optimización
-Bulkify un Trigger: Refactoriza un trigger para hacerlo compatible con operaciones en masa.
-Uso de Collection en Triggers: Implementa un Set para almacenar Ids de registros y evitar consultas SOQL dentro de bucles.
-Reutilización de Código: Crea una clase de utilidad con métodos reutilizables para operaciones comunes en registros Account.
-SOQL y FOR Loop: Usa un for loop con SOQL para evitar límites de consulta en Triggers.
-SOQL Lazy Loading: Implementa una lógica donde se carguen datos solo cuando sean necesarios.
+
+**Ejercicios de Optimización**
+32. Bulkify un Trigger: Refactoriza un trigger para hacerlo compatible con operaciones en masa.
+33. Uso de Collection en Triggers: Implementa un Set para almacenar Ids de registros y evitar consultas SOQL dentro de bucles.
+34. Reutilización de Código: Crea una clase de utilidad con métodos reutilizables para operaciones comunes en registros Account.
+35. SOQL y FOR Loop: Usa un for loop con SOQL para evitar límites de consulta en Triggers.
+36. SOQL Lazy Loading: Implementa una lógica donde se carguen datos solo cuando sean necesarios.
