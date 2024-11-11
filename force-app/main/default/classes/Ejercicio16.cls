@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-11-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -24,7 +24,7 @@ public with sharing class Ejercicio16 {
         System.debug('Esta es la lista inicial: ' + lista);
 
         //Eliminar números de la lista usando remove(). Se remueve por índice.
-        lista.remove(2);
+        lista.remove(lista.indexOf(2));
 
         System.debug('Esta es la lista tras remover elemento: ' + lista);
 
