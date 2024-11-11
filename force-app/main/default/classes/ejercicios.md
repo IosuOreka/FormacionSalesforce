@@ -26,7 +26,7 @@
 26. *Transacciones*: Usa Savepoint y Rollback para revertir cambios después de una operación DML.
 27. *Bulk DML*: Inserta una lista de Account en una sola transacción DML.
 
-**TRIGGERS**
+**TRIGGERS Y CLASES 2**
 28. *Triggers Básicos*: Crea un trigger que se active al crear un Account y lo imprima en el log.
 29. *Trigger After Insert*: Crea un trigger que añada un Contact automáticamente al insertar un nuevo Account.
 30. *Trigger Before Update*: Crea un trigger que verifique que la industria de un Account no sea null al actualizarse.
