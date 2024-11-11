@@ -1,0 +1,117 @@
+/* Lista de Pokémon */
+.pokemon-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 0;
+    margin-right: 20px;
+    border-right: 2px solid #ddd;
+    height: 100%; /* Asegura que tenga la misma altura que el panel de detalles */
+}
+
+.pokemon-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Detalles del Pokémon */
+.pokemon-details {
+    max-height: 80vh;
+    overflow-y: auto;
+    height: 100%; /* Asegura que tenga la misma altura que la lista */
+}
+
+.pokemon-container {
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-item {
+    padding: 15px;
+    text-align: center;
+}
+
+.pokemon-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.pagination-controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Estilo de los elementos de la lista */
+.slds-list__item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.slds-media__figure img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Hacer la lista y el panel de detalles de la misma altura */
+.slds-grid {
+    display: flex;
+    align-items: stretch; /* Hace que los elementos hijos se estiren para tener la misma altura */
+}
+
+.slds-list_dotted {
+    list-style-type: none;
+    padding: 0;
+}
+
+.slds-button {
+    margin: 10px;
+}
+
+/* Estilos generales para los detalles del Pokémon */
+.pokemon-details {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 8px 8px 15px #b0b0b0, -8px -8px 15px #ffffff;
+    transition: all 0.3s ease;
+}
+/* Estilo neumórfico para los elementos de la lista */
+.pokemon-item {
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1), -8px -8px 15px rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s;
+}
+
+.pokemon-item:hover {
+    transform: scale(1.05);
+}
+
+/* Clases de tipo */
+.fire-type { background-color: #f08030; }
+.water-type { background-color: #6890f0; }
+.grass-type { background-color: #78c850; }
+.electric-type { background-color: #f8d030; }
+.psychic-type { background-color: #f85888; }
+.normal-type { background-color: #a8a878; }
+.flying-type { background-color: #a890f0; }
+.ghost-type { background-color: #705898; }
+
+/* Estilo para la imagen de los Pokémon */
+.pokemon-thumbnail {
+    width: 50px;
+    height: 50px;
+}
+
+.pokemon-image {
+    width: 100px;
+    height: 100px;
+}
