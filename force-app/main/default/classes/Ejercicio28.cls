@@ -11,6 +11,5 @@
 trigger imprimirDatosAccount on Account (before insert) {
     for (Account acc : Trigger.new) {
         System.debug('Nueva cuenta creada: ' + acc.Name);
-
     }
 }

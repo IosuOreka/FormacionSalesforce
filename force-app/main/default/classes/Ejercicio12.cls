@@ -2,14 +2,14 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-11-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
 // 12. *Sentencia Switch*: Usa Switch para determinar el día de la semana según un número entre 1 y 7.
 
 public with sharing class Ejercicio12 {
-    public Ejercicio12(Integer dia) {
+    public void Ejercicio12(Integer dia) {
         switch on dia {
             when 7 {
                 System.debug('Domingo');

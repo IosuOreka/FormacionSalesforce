@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-11-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 // 17. *Mapas*: Crea un Map de nombres de personas y sus edades. Añade, elimina y actualiza entradas en el mapa.
@@ -44,7 +44,8 @@ public with sharing class Ejercicio17 {
         personas.put('Eduardo', personas.get('Eduardo') + 1);
         personas.put('Sara', personas.get('Sara') + 1);
 
-        System.debug('Mapa de personas final:    ' + personas);
 
+        System.debug('Mapa de personas final:    ' + personas);
+        
     }
 }
