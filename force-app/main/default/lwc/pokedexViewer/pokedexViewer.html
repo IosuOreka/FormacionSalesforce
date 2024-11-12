@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 11-11-2024
+  @last modified on  : 11-12-2024
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -13,13 +13,13 @@
                 <template if:true={pokemons}>
                     <ul class="slds-list_dotted">
                         <template for:each={pokemons} for:item="poke">
-                            <li key={poke.name} class="slds-list__item slds-m-bottom_small" onclick={handlePokemonSelect} data-id={poke.Id}>
+                            <li key={poke.Name} class="slds-list__item slds-m-bottom_small pokemon-item" 
+                                onclick={handlePokemonSelect} 
+                                data-id={poke.Id}>
                                 <div class="slds-media slds-media_center">
-                                    <!-- Miniatura de la imagen del Pokémon -->
                                     <div class="slds-media__figure">
-                                        <img src={poke.imageUrl} alt={poke.name} class="pokemon-thumbnail" />
+                                        <img src={poke.imageUrl} alt={poke.Name} class="pokemon-thumbnail"/>
                                     </div>
-                                    <!-- Nombre y número de Pokédex -->
                                     <div class="slds-media__body">
                                         <p><strong>{poke.Name}</strong></p>
                                     </div>
@@ -31,13 +31,17 @@
                 <template if:false={pokemons}>
                     <p>No se encontraron Pokémon.</p>
                 </template>
+                <div class="pagination-controls">
+                    <lightning-button variant="neutral" label="Previous" onclick={handlePrevious} disabled={isPreviousDisabled}></lightning-button>
+                    <lightning-button variant="neutral" label="Next" onclick={handleNext} disabled={isNextDisabled}></lightning-button>
+                </div>
             </div>
 
             <!-- Detalles del Pokémon -->
             <div class="pokemon-details slds-col slds-size_3-of-4">
                 <template if:true={pokemon}>
-                    <div class="pokemon-container">
-                        <div class="pokemon-item {getTypeClass(pokemon.Tipo_1__c)}">
+                    <div class="pokemon-container electric-type {pokemonBackgroundClass}">
+                        <div class="pokemon-item">
                             <img src={pokemon.imageUrl} alt={pokemon.Name} class="pokemon-image"/>
                             <p><strong>{pokemon.Name}</strong></p>
                             <p><strong>Pokédex #:</strong> {pokemon.N_en_pokedex__c}</p>
@@ -47,10 +51,9 @@
                             <p><strong>Tipo 2:</strong> {pokemon.Tipo_2__c}</p>
                         </div>
                     </div>
-
                     <div class="pagination-controls">
-                        <lightning-button variant="neutral" label="Previous" onclick={handlePrevious} disabled={isPreviousDisabled}></lightning-button>
-                        <lightning-button variant="neutral" label="Next" onclick={handleNext} disabled={isNextDisabled}></lightning-button>
+                        <lightning-button variant="neutral" label="Previous Pokémon" onclick={handlePreviousPokemon}></lightning-button>
+                        <lightning-button variant="neutral" label="Next Pokémon" onclick={handleNextPokemon}></lightning-button>
                     </div>
                 </template>
 

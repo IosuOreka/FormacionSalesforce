@@ -1,13 +1,13 @@
 import { LightningElement, track } from 'lwc';
 
 export default class Pokedex extends LightningElement {
-    @track pokemons = []; // Lista de todos los Pokémon con solo nombre e imagen
-    @track pokemon;       // Pokémon seleccionado con todos los detalles
-    @track isPreviousDisabled = true; // Inicialmente deshabilitado el botón Previous
-    @track isNextDisabled = false;   // Inicialmente habilitado el botón Next
+    @track pokemons = []; 
+    @track pokemon;       
+    @track isPreviousDisabled = true; 
+    @track isNextDisabled = false;  
 
-    currentIndex = 0; // Para manejar la paginación
-    allPokemons = []; // Aquí almacenamos todos los detalles de los Pokémon
+    currentIndex = 0; 
+    allPokemons = []; 
 
     connectedCallback() {
         this.loadPokemons();
@@ -18,9 +18,9 @@ export default class Pokedex extends LightningElement {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=150&offset=0')
             .then(response => response.json())
             .then(data => {
-                this.pokemons = data.results; // Lista inicial de Pokémon
+                this.pokemons = data.results;
                 console.log("RESULTS", data.results);
-                this.fetchPokemonDetails(this.pokemons); // Obtener detalles de los Pokémon
+                this.fetchPokemonDetails(this.pokemons);
             })
             .catch(error => {
                 console.error('Error loading Pokémon:', error);
@@ -46,11 +46,11 @@ export default class Pokedex extends LightningElement {
                 });
         });
 
-        // Esperamos que todas las promesas se resuelvan antes de cargar el primer Pokémon
+        
         Promise.all(promises).then(() => {
-            this.pokemons = this.allPokemons.slice(0, 10); // Cargar los primeros 10 Pokémon
-            this.pokemon = this.allPokemons[0]; // Cargamos el primer Pokémon
-            this.isNextDisabled = this.allPokemons.length <= 10; // Deshabilitar "Next" si no hay más
+            this.pokemons = this.allPokemons.slice(0, 10); 
+            this.pokemon = this.allPokemons[0]; 
+            this.isNextDisabled = this.allPokemons.length <= 10; 
         });
     }
 
@@ -60,10 +60,10 @@ export default class Pokedex extends LightningElement {
         this.pokemon = this.allPokemons.find(poke => poke.Id === parseInt(pokemonId));
     }
 
-    // Manejo de paginación (mostrar 10 Pokémon a la vez)
+    // Manejo de paginación de 10 en 10 en la lista
     handlePrevious() {
         if (this.currentIndex > 0) {
-            this.currentIndex -= 10; // Retrocedemos 10 Pokémon
+            this.currentIndex -= 10; 
             this.pokemons = this.allPokemons.slice(this.currentIndex, this.currentIndex + 10);
             this.isPreviousDisabled = this.currentIndex === 0;
             this.isNextDisabled = false;
@@ -72,14 +72,29 @@ export default class Pokedex extends LightningElement {
 
     handleNext() {
         if (this.currentIndex < this.allPokemons.length - 10) {
-            this.currentIndex += 10; // Avanzamos 10 Pokémon
+            this.currentIndex += 10; 
             this.pokemons = this.allPokemons.slice(this.currentIndex, this.currentIndex + 10);
             this.isPreviousDisabled = false;
             this.isNextDisabled = this.currentIndex + 10 >= this.allPokemons.length;
         }
     }
 
-    // Obtener la clase CSS según el tipo de Pokémon
+    // Manejo de paginación para el Pokémon central (de 1 en 1)
+    handlePreviousPokemon() {
+        const currentIndex = this.allPokemons.findIndex(poke => poke.Id === this.pokemon.Id);
+        if (currentIndex > 0) {
+            this.pokemon = this.allPokemons[currentIndex - 1];
+        }
+    }
+
+    handleNextPokemon() {
+        const currentIndex = this.allPokemons.findIndex(poke => poke.Id === this.pokemon.Id);
+        if (currentIndex < this.allPokemons.length - 1) {
+            this.pokemon = this.allPokemons[currentIndex + 1];
+        }
+    }
+
+    // Obtener la clase CSS según el tipo de Pokémon para el fondo
     getTypeClass(type) {
         switch (type) {
             case 'fire': return 'fire-type';
@@ -92,5 +107,10 @@ export default class Pokedex extends LightningElement {
             case 'ghost': return 'ghost-type';
             default: return 'normal-type';
         }
+    }
+
+    // Método para obtener la clase del tipo primario
+    get pokemonBackgroundClass() {
+        return this.pokemon ? this.getTypeClass(this.pokemon.Tipo_1__c) : '';
     }
 }
