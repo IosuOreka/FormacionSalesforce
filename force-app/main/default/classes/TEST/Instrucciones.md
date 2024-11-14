@@ -1,0 +1,1 @@
+Cada uno de los test que aquí se muestran vienen a chequear el código que hay en la carpeta general classes.

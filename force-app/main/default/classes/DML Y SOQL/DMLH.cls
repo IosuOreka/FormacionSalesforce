@@ -23,7 +23,7 @@ public with sharing class InactiveAccountDeactivator {
             WHERE Id NOT IN (
                 SELECT AccountId 
                 FROM Opportunity 
-                WHERE StageName != 'Closed' AND AccountId != NULL
+                WHERE StageName != 'Closed'
             )
         ];
 
