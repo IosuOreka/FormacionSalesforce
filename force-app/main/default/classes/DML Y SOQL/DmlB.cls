@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-12-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -15,9 +15,9 @@
 
 
 public with sharing class OpportunityStatusUpdater {
-    public updateOpportunityStage(List<Id> OpportunityStatusUpdater) {
+    public void updateOpportunityStage(List<Id> OpportunityStatusUpdater) {
 
-        List<Opportunity> oportunidadesUpdate = [SELECT Id FROM Opportunity WHERE Id =: OpportunityStatusUpdater];
+        List<Opportunity> oportunidadesUpdate = [SELECT Id, StageName FROM Opportunity WHERE Id =: OpportunityStatusUpdater];
 
         for(Opportunity opp : oportunidadesUpdate){
             opp.StageName = 'Closed Won';

@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-12-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 // **D. Enunciado: Crea una clase llamada ContactAccountAssigner con un método assignAccountToContacts. Este método debe recibir una lista de Ids de contactos y el Id de una cuenta, y asignar todos esos contactos a la cuenta especificada.**
@@ -16,9 +16,16 @@
 public with sharing class ContactAccountAssigner{
     public static void assignAccountToContacts(List<Id> contactIds, Id accountId){
         List<Contact> contactsToUpdate = new List<Contact>();
-        for(Id contactId : contactIds){
-            contactsToUpdate.add(new Contact(Id = contactId, AccountId = accountId));
+        List<Contact> contactsRecuperados = [SELECT Id, AccountId FROM Contact WHERE Id =: contactIds];
+
+        for(Contact conn : contactsRecuperados){
+            conn.AccountId = accountId; 
+            contactsToUpdate.add(conn);
         }
-        update contactsToUpdate;
+
+        if(!contactsToUpdate.isEmpty()){
+            update contactsToUpdate;
+        }
     }
 }
+

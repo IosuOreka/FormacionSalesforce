@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-12-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -30,7 +30,6 @@ public with sharing class OpportunityManager {
     }
 
     public void setCloseDate(List<Id> opportunityIds, Date newCloseDate){
-        // Creamos una lista para almacenar las oportunidades que se van a actualizar
         List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
 
         for(Opportunity opp : [SELECT Id, Name, AccountId, Amount, StageName, CloseDate FROM Opportunity WHERE Id IN :opportunityIds]){

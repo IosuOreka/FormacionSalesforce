@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-12-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 // **H.Enunciado: Crea una clase llamada InactiveAccountDeactivator que tenga un método deactivateInactiveAccounts.
@@ -14,21 +14,26 @@
 // - *Usa una operación update para guardar los cambios.*
 
 
-public with sharing class InactiveAccountDeactivator{
+public with sharing class InactiveAccountDeactivator {
 
-    public void deactivateInactiveAccounts(){
+    public void deactivateInactiveAccounts() {
+        List<Account> cuentasParaDesactivar = [
+            SELECT Id, Name, Active__c 
+            FROM Account 
+            WHERE Id NOT IN (
+                SELECT AccountId 
+                FROM Opportunity 
+                WHERE StageName != 'Closed' AND AccountId != NULL
+            )
+        ];
 
-        List<Opportunity> oportunidadesBuscadas = [SELECT Id, Active__c FROM Opportunity where Status != 'Closed'];
-        List<Opportunity> oportunidadesActualizadas = new List<Opportunity>();
+        if (!cuentasParaDesactivar.isEmpty()) {
+            for (Account cuenta : cuentasParaDesactivar) {
+                cuenta.Active__c = false;
+            }
 
-        for(Opportunity opp : oportunidadesBuscadas){
-            opp.Active__c = false;
-            oportunidadesActualizadas.add(opp);
+            update cuentasParaDesactivar;
         }
-
-        if(oportunidadesActualizadas.size() > 0){
-            update oportunidadesActualizadas; 
-        }
-
     }
 }
+
