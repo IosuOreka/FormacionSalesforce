@@ -1,0 +1,23 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 11-11-2024
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
+// 8. *Clases y Métodos*: Define una clase Persona con propiedades nombre y edad, y un método que imprima sus datos.
+
+public class Persona{
+    public String nombre{get;set;};
+    public Integer Edad {get;set;};
+
+    public Persona(String a, Integer b){
+        this.nombre = a;
+        this.Edad = b;
+    }
+
+    public imprime(){
+        return 'Nombre: ' + this.nombre + ' Edad: ' + this.Edad;
+    }
+}
+

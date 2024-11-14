@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salesforce developer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .answer {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+    .answer:hover {
+      background-color: #e0e0e0;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #333;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Salesforce developer</h1>
+    <div id="question-container"></div>
+    <div class="feedback" id="feedback"></div>
+    <button id="next-btn">Siguiente</button>
+  </div>
+
+  <script>
+    // Aquí va tu JSON de preguntas (puedes incluir todo el JSON que ya has creado)
+    const questions = [
+    {
+        "question": "A developer must create a DrayList class that provides capabilities defined in the Sortable and Drawable interfaces.\n\npublic interface Sortable{\n    void sort();\n}\n\npublic interface Drawable{\n    void draw();\n}\n\nWhich is the correct implementation?",
+        "tipo": "única",
+        "options": [
+          "A) public class DrawList implements Sortable, Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "B) public class DrawList extends Sortable, Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "C) public class DrawList extends Sortable,  extends Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "D) public class DrawList implements Sortable, implements Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}"
+        ],
+        "correctAnswer": ["A"]
+      }
+  ];
+
+    // Variables para llevar el control de las preguntas
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    // Mezclar las preguntas aleatoriamente
+    function shuffleQuestions() {
+      for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+      }
+    }
+
+        function showQuestion(questionIndex) {
+      const question = questions[questionIndex];
+      const container = document.getElementById('question-container');
+      const feedback = document.getElementById('feedback');
+      
+      // Limpiar la sección de feedback
+      feedback.innerHTML = '';
+    
+      // Mostrar la pregunta y la imagen si está presente
+      container.innerHTML = `
+        <div class="question">${question.question}</div>
+        ${question.image ? `<img src="${question.image}" alt="Question Image" style="max-width: 100%; margin-bottom: 15px;">` : ''}
+        <div class="options">
+          ${question.options.map((option, index) => 
+            `<div class="answer" data-option="${option}">${option}</div>`
+          ).join('')}
+        </div>
+      `;
+    
+      // Añadir event listeners a las respuestas
+      document.querySelectorAll('.answer').forEach(answer => {
+        answer.addEventListener('click', () => checkAnswer(answer.dataset.option, question.correctAnswer));
+      });
+    }
+
+    // Comprobar la respuesta
+    function checkAnswer(selectedAnswer, correctAnswer) {
+      const feedback = document.getElementById('feedback');
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        feedback.innerHTML = `<p class="correct">¡Correcto! La respuesta es: ${correctAnswer}</p>`;
+      } else {
+        feedback.innerHTML = `<p class="incorrect">Incorrecto. La respuesta correcta es: ${correctAnswer}</p>`;
+      }
+      document.getElementById('next-btn').style.display = 'block'; // Mostrar el botón de siguiente
+    }
+
+    // Cargar la siguiente pregunta
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion(currentQuestionIndex);
+        document.getElementById('next-btn').style.display = 'none'; // Ocultar el botón de siguiente hasta que el usuario elija una respuesta
+      } else {
+        const container = document.getElementById('question-container');
+        container.innerHTML = `<h2>¡Encuesta completada!</h2><p>Tu puntaje es: ${score} de ${questions.length}</p>`;
+        document.getElementById('next-btn').style.display = 'none'; // Ocultar el botón de siguiente
+      }
+    }
+
+    // Inicializar la encuesta
+    function startSurvey() {
+      shuffleQuestions(); // Mezclar las preguntas
+      showQuestion(currentQuestionIndex); // Mostrar la primera pregunta
+    }
+
+    // Iniciar la encuesta al cargar la página
+    window.onload = startSurvey;
+
+    // Añadir event listener al botón de siguiente
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+  </script>
+
+</body>
+</html>

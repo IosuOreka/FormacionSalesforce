@@ -7,3 +7,8 @@
 **/
 // 1. *Hello World*: Escribe un programa que imprima "Hello World" en la consola de depuración.
 
+public class Ejercicio1 {
+    public Ejercicio1(){
+        System.debug("Hello World");
+    }
+}
