@@ -1,0 +1,26 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 11-12-2024
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
+// **H.Enunciado: Crea una clase llamada InactiveAccountDeactivator que tenga un método deactivateInactiveAccounts.
+//  Este método debe buscar cuentas que no tengan ninguna oportunidad abierta y actualizar su estado a "Inactive".**
+
+// Requerimientos:
+// - *Realiza una consulta para buscar cuentas que no tengan oportunidades con estado distinto a "Closed".*
+// - *Cambia el campo Active__c (suponiendo que es un campo personalizado tipo Checkbox) de cada cuenta a false.*
+// - *Usa una operación update para guardar los cambios.*
+
+public class InactiveAccountDeactivator{
+    public void deactivateInactiveAccounts(){
+        List<Account> cuentasInactivas = new List<Account>();
+        List<Account> cuentas = [select Id, Active__c from Account where Id not in (select AccountId from Opportunity where StageName != 'Closed')];
+        for(Account acc : cuentas){
+            acc.Active__c = false;
+            cuentasInactivas.add(acc);
+        }
+        update cuentasInactivas;
+    }
+}
