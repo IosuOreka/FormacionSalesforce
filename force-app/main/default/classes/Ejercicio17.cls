@@ -2,14 +2,14 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-11-2024
+ * @last modified on  : 11-18-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 // 17. *Mapas*: Crea un Map de nombres de personas y sus edades. Añade, elimina y actualiza entradas en el mapa.
 
 public with sharing class Ejercicio17 {
 
-    public manejoMaps() {
+    public Map<String, Integer> manejoMaps() {
 
         Map<String,Integer> personas = new Map<String,Integer>();
 
@@ -28,9 +28,10 @@ public with sharing class Ejercicio17 {
 
         //Remover personas del map
 
-        personas.remove(0);
-        personas.remove(2);
-        personas.remove(3);
+        personas.remove('Carlos');
+        personas.remove('Rosa');
+        personas.remove('Diana');
+
 
         System.debug('Mapa de personas despues de las eliminaciones: ' + personas);
 
@@ -46,6 +47,7 @@ public with sharing class Ejercicio17 {
 
 
         System.debug('Mapa de personas final:    ' + personas);
+        return personas;
         
     }
 }
