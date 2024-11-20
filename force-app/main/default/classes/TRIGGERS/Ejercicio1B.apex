@@ -23,3 +23,17 @@ trigger UpdateContactCount on Contact (after insert){
     }
     update accountsToUpdate;
 }
+
+
+// trigger UpdateContactCount on Contact (after insert) {
+//     Map<Id, Integer> accountContactCount = new Map<Id, Integer>();
+
+//     for (Contact con : Trigger.new) {
+//         if (con.AccountId != null) {
+//             accountContactCount.put(con.AccountId, accountContactCount.get(con.AccountId, 0) + 1);
+//         }
+//     }
+
+//     update [SELECT Id FROM Account WHERE Id IN :accountContactCount.keySet() 
+//             FOR UPDATE SET Number_of_Contacts__c = :accountContactCount.values()];
+// }
