@@ -20,36 +20,20 @@
  * See the Apex Language Reference for more information about Testing and Code Coverage.
  */
 @isTest
-private class TEST26 {
+private class TEST27 {
 
     @isTest
     static void myUnitTest() {
-       
-        Test.startTest();
-
-        Ejercicio26 ej = new Ejercicio26();
-        ej.performTransaction();
-
-        Test.stopTest();
-
-        Account acc = [SELECT Id FROM Account WHERE Name = 'Cuenta temporal' LIMIT 1];
-
-
-        System.assertEquals(null, acc, 'La cuenta no debería existir en la base de datos.');
-    }
-
-    @isTest
-    static void testRollBackEffect(){
-        Integer beforeCount = [SELECT COUNT() FROM Account WHERE Name = 'Cuenta temporal'];
 
         Test.startTest();
-        Ejercicio26 ej = new Ejercicio26();
-        ej.performTransaction();
+
+        Ejercicio27 ejercicio = new Ejercicio27();
+        ejercicio.insertarLista(); 
+
+        Integer cuentasTeoricas = [SELECT COUNT() FROM Account WHERE Name LIKE 'DML Insert%'];
+
+        System.assertEquals(4, cuentasTeoricas, 'Se han insertado 4 cuentas teóricas.');
+
         Test.stopTest();
-
-        Integer afterCount = [SELECT COUNT() FROM Account WHERE Name = 'Cuenta temporal'];
-
-        System.Assert.areEqual(beforeCount, afterCount, 'No se realizaron efectos sobre la cuenta.');
     }
 }
-
