@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-19-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 // 26. Transacciones: Usa Savepoint y Rollback para revertir cambios después de una operación DML.
@@ -17,7 +17,7 @@ public with sharing class Ejercicio26 {
             insert acc;
             System.debug('Cuenta creada: ' + acc.Id);
 
-            Integer divisionByZero = 0;
+            Integer divisionByZero = 0/0;
         }
         catch (Exception ex) {
             Database.rollback(sp);

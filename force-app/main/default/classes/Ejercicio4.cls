@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-11-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -10,13 +10,16 @@
 
 public with sharing class Ejercicio4 {
     
-    public void verificarNumero(Integer num){
+    public String verificarNumero(Integer num){
         if (num < 0){
             System.debug('El numero ' + num + ' es negativo');
+            return 'menor';
         } else if(num == 0){
             System.debug('El numero ' + num + ' es cero');
+            return 'cero';
         }else{
             System.debug('El numero ' + num + ' es positivo');
+            return 'mayor';
         }
     }
 }

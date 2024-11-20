@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-11-2024
+ * @last modified on  : 11-18-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -10,7 +10,7 @@
 
 public with sharing class Ejercicio18 {
 
-    public void manipulateSet() {
+    public Set<Integer> manipulateSet() {
         Set<Integer> numeros = new Set<Integer>();
         
         numeros.add(10);
@@ -21,7 +21,7 @@ public with sharing class Ejercicio18 {
         System.debug('Set después de agregar elementos: ' + numeros);
         Boolean contiene20 = numeros.contains(20);
         System.debug('¿El set contiene el número 20? ' + contiene20);
-
+        return numeros;
 
     }
 }

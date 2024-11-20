@@ -56,17 +56,18 @@ Requerimientos:
 
 
 
+**EJERCICIOS AVANZADOS**
 
+*Ejercicio 1: Crear una Clase para Gestión de Oportunidades*
+**Enunciado: Crea una clase llamada OpportunityManager en Apex que tenga métodos para gestionar oportunidades. Esta clase debe incluir los siguientes métodos:**
 
-Ejercicio 1: Crear una Clase para Gestión de Oportunidades
-Enunciado: Crea una clase llamada OpportunityManager en Apex que tenga métodos para gestionar oportunidades. Esta clase debe incluir los siguientes métodos:
-
-getClosedWonOpportunities(List<Id> accountIds): Devuelve una lista de oportunidades en estado "Closed Won" relacionadas con una lista de cuentas.
-calculateTotalAmount(List<Id> opportunityIds): Calcula el monto total de una lista de oportunidades.
+-getClosedWonOpportunities(List<Id> accountIds): Devuelve una lista de oportunidades en estado "Closed Won" relacionadas con una lista de cuentas.
+-calculateTotalAmount(List<Id> opportunityIds): Calcula el monto total de una lista de oportunidades.
 setCloseDate(List<Id> opportunityIds, Date newCloseDate): Actualiza la fecha de cierre de una lista de oportunidades a la fecha proporcionada en newCloseDate.
 Prueba esta clase en un método de prueba en el que crees algunas oportunidades de ejemplo y luego llames a estos métodos para verificar que funcionan como se espera.
 
-Ejercicio 2: Generar Informes de Cuentas en Diferentes Etapas de Venta
+
+*Ejercicio 2: Generar Informes de Cuentas en Diferentes Etapas de Venta*
 Enunciado: Crea una clase llamada AccountReport que permita generar informes sobre cuentas en función de las etapas de venta de sus oportunidades. Los métodos que debe incluir son:
 
 generateReportByStage(String stage): Devuelve una lista de cuentas que tienen al menos una oportunidad en la etapa de venta especificada en stage.
@@ -114,7 +115,7 @@ markCaseAsUrgent(List<Id> caseIds): Cambia el campo "Urgent" a true para todos l
 getUnresolvedCasesOlderThan(Integer days): Devuelve una lista de casos sin resolver que tienen más de un número específico de días abiertos.
 Este ejercicio te permitirá practicar la lógica condicional, el manejo de fechas y la notificación a usuarios.
 
-Ejercicio 8: Estadísticas de Contactos por Cuenta
+*Ejercicio 8: Estadísticas de Contactos por Cuenta*
 Enunciado: Crea una clase llamada ContactStatistics para obtener estadísticas sobre contactos en una organización. Los métodos que debe contener son:
 
 countContactsByAccount(List<Id> accountIds): Devuelve un mapa de AccountId a número de contactos para cada cuenta en la lista.

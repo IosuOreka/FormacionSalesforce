@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-11-2024
+ * @last modified on  : 11-18-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -10,7 +10,7 @@
 
 public with sharing class Ejercicio16 {
 
-    public manipulacionLista() {
+    public List<Integer> manipulacionLista() {
 
         List<Integer> lista = new List<Integer>();
 
@@ -33,5 +33,6 @@ public with sharing class Ejercicio16 {
         Integer num = 5;
         Boolean encontrado = lista.contains(num);
         System.debug('El número palnteado se encuentra en la lista: ' + encontrado);
+        return lista;
     }
 }

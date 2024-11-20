@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-14-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -10,7 +10,7 @@
 
 
 public with sharing class Ejercicio11 {
-    public Ejercicio11() {
+    public Integer Ejercicio11() {
         Integer suma = 0;
         Integer cont = 1;
         do{
@@ -18,5 +18,6 @@ public with sharing class Ejercicio11 {
             cont++;
         } while (cont <= 20);
         System.debug('La suma es: ' + suma);
+        return suma;
     }
 }

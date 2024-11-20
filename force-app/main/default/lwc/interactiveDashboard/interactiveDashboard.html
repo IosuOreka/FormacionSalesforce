@@ -1,0 +1,79 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-20-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card title="Dashboard Interactivo de Cuentas" icon-name="custom:custom63">
+      <div class="slds-grid slds-wrap slds-p-around_medium">
+        
+        <!-- Filtros -->
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+          <lightning-combobox 
+            label="Industria"
+            value={selectedIndustry}
+            options={industryOptions}
+            onchange={handleIndustryChange}>
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+          <lightning-combobox 
+            label="Segmento"
+            value={selectedSegment}
+            options={segmentOptions}
+            onchange={handleSegmentChange}>
+          </lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+          <lightning-input 
+            type="search" 
+            label="Buscar por Nombre"
+            value={searchKey}
+            onchange={handleSearch}>
+          </lightning-input>
+        </div>
+      </div>
+  
+      <!-- Gráficos -->
+      <div class="slds-grid slds-wrap slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <lightning-card title="Distribución por Industria" icon-name="custom:custom33">
+            <canvas lwc:dom="manual" class="chart" data-id="industryChart"></canvas>
+          </lightning-card>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <lightning-card title="Ingresos por Segmento" icon-name="custom:custom102">
+            <canvas lwc:dom="manual" class="chart" data-id="segmentChart"></canvas>
+          </lightning-card>
+        </div>
+      </div>
+  
+      <!-- Tabla -->
+      <div class="slds-p-around_medium">
+        <lightning-datatable 
+          key-field="Id" 
+          data={filteredAccounts} 
+          columns={columns}
+          onrowaction={handleRowAction}>
+        </lightning-datatable>
+      </div>
+  
+      <!-- Detalles de Cuenta -->
+      <template if:true={selectedAccount}>
+        <section class="slds-m-top_medium">
+          <lightning-card title="Detalles de la Cuenta Seleccionada" icon-name="standard:account">
+            <div class="slds-p-around_medium">
+              <p><b>Nombre:</b> {selectedAccount.Name}</p>
+              <p><b>Propietario:</b> {selectedAccount.OwnerId}</p>
+              <p><b>Ingresos Anuales:</b> {selectedAccount.AnnualRevenue}</p>
+              <p><b>Industria:</b> {selectedAccount.Industry}</p>
+              <p><b>Teléfono:</b> {selectedAccount.Phone}</p>
+            </div>
+          </lightning-card>
+        </section>
+      </template>
+    </lightning-card>
+  </template>
+  

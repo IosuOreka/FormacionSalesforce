@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 11-08-2024
+ * @last modified on  : 11-18-2024
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 
@@ -17,7 +17,9 @@ public with sharing class Persona {
         this.edad = e;
     }
 
-    public void imprimirDatos() {
+    public String imprimirDatos() {
+        String mensajeDevuelto = 'Persona: ' + nombre + ' con edad ' + edad;
         System.debug('Persona: ' + nombre + ' con edad ' + edad);
+        return mensajeDevuelto;
     }
 }
