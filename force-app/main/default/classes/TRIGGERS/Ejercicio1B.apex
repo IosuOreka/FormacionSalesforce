@@ -7,19 +7,15 @@
 **/
 // 1. Registrar el número de contactos asociados a una cuenta cada vez que se crea un nuevo contacto.
 
-trigger UpdateContactCount on Contact (after insert){
 
-    Map<Id, Integer> accountContactCount = new Map<Id, Integer>();
-
-    for(Contact con: Trigger.new){
-        if(con.AccountId != null){
-            accountContactCount.put(con.AccountId, accountContactCount.getOrDefault(con.AccountId, 0) + 1);
-        }
+trigger Ejercicio1B on Contact (after insert) {
+    Set<Id> accountIds = new Set<Id>();
+    for (Contact contact : Trigger.new) {
+        accountIds.add(contact.AccountId);
     }
-
-    List <Account> accountsToUpdate = new List<Account>();
-    for(Id accountId : accountContactCount.keySet()){
-        accountsToUpdate.add(new Account(Id = accountId, Number_of_Contacts__c = accountContactCount.get(accountId)));
+    List<Account> accounts = [SELECT Id, NumberOfContacts__c FROM Account WHERE Id IN :accountIds];
+    for (Account account : accounts) {
+        account.NumberOfContacts__c = [SELECT COUNT() FROM Contact WHERE AccountId = :account.Id];
     }
-    update accountsToUpdate;
+    update accounts;
 }

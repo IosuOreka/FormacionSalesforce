@@ -7,10 +7,10 @@
 **/
 // 1. Mostrar un mensaje si se intenta crear un contacto sin nombre.
 
-trigger ejercicio1C on Contact (before insert){
-    for (Contact con : Trigger.new){
-        if (con.Name == null) {
-            con.addError('No te sabes ni el nombre?');
+trigger messageContact on Contact (before insert){
+    for(Contact con : Trigger.new){
+        if(con.Name = null || con.Name = ''){
+           con.addError('El contacto debe tener al menos un nombre.');
         }
     }
 }

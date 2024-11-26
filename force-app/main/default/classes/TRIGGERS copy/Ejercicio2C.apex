@@ -7,8 +7,8 @@
 **/
 // 2. Actualizar un campo de tipo casilla de verificación cuando se crea un nuevo registro.
 
-trigger ejercicio2C on Custom_object__c (after insert){
-    for (Custom_object__c cus : Trigger.new){
-        cus.check__c == true;
+trigger SetCheckBoxOnInsert on CustomObject__c (before insert){
+    for(CustomObject__c obj : Trigger.new){
+        obj.Is_Checked__c = true;
     }
 }

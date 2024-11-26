@@ -7,9 +7,8 @@
 **/
 // 4. Copiar el nombre de una cuenta a un campo personalizado al crearla.
 
-trigger ejercicio4C on Account (after insert){
+trigger AcccountCopyName on Account(before insert){
     for(Account acc : Trigger.new){
-        acc.customName__c == acc.Name;
-        update acc;
+        acc.Campo_personalizado__c = acc.Name;
     }
 }
