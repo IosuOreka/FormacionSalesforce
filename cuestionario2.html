@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salesforce developer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .answer {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+    .answer:hover {
+      background-color: #e0e0e0;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #333;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Salesforce developer</h1>
+    <div id="question-container"></div>
+    <div class="feedback" id="feedback"></div>
+    <button id="validate-btn" style="display: none;">Validar</button>
+    <button id="next-btn" style="display: none;">Siguiente</button>
+  </div>
+
+  <script>
+    const questions = [
+    {
+        "question": "1- Universal Containers wants to lower its shipping cost while making the shipping process more efficient. The distribution Officer advises UC to implement global addresses to allow multiple accounts to share a default pickup address. The developer is tasked to create the supporting object and relationship for the business requirement and uses the setup menu to create a custom object called 'Global Address'.",
+        "tipo": "única",
+        "options": [
+          "A) Add a master detail field on the Global Address object to the Account object.",
+          "B) Add a lookup field on the Global Address object to the Account object.",
+          "C) Add a lookup field on the Account object to the Global Address object.",
+          "D) Add a master-detail field on the Account object to the Global Address object."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "2- Universal Containers hires a developer to build a custom search page to help users find the Accounts they want. Users will be able to search on Name, Description, and a custom comments field.",
+        "tipo": "múltiple",
+        "options": [
+          "A) SOQL is able to return more records.",
+          "B) SOSL is faster for text searches.",
+          "C) SOSL is able to return more records.",
+          "D) SOQL is faster for text searches."
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "question": "3- A developer is migrating a Visualforce page into a Lightning web component. The Visualforce page shows information about a single record. The developer decides to use Lightning Data Service to access record data.",
+        "tipo": "única",
+        "options": [
+          "A) The isAccessible() method must be used for field-label access checks.",
+          "B) The with sharing keyword must be used to enforce sharing rules.",
+          "C) Lightning Data Service handles sharing rules and field-level security.",
+          "D) Lightning Data Services ignores field-level security."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "4- A developer considers the following snippet of code:\n\nBoolean isOK;\ninteger x;\nString theString = 'Hello';\n\nif(isOK == false && theString = 'Hello'){\n  x = 1;\n}else if(isOK == true && theString == 'Hello'){\n  x = 2;\n}else if(isOK != null && theString == 'Hello'){\n  x = 3;\n}else{\n  x = 4;\n}",
+        "tipo": "única",
+        "options": [
+          "a) 2",
+          "b) 1",
+          "c) 4",
+          "d) 3"
+        ],
+        "correctAnswer": [2],
+        "image": "public/4.png"
+      },
+      {
+        "question": "5- A developer created a trigger on the Account object. While testing the trigger, the developer sees the error message 'Maximum trigger depth exceeded'. What could be the possible causes?",
+        "tipo": "única",
+        "options": [
+          "a) The trigger is getting executed multiple times.",
+          "b) The trigger is too long and should be refactored into a helper class.",
+          "c) The developer does not have the correct user permission.",
+          "d) The trigger does not have sufficient code coverage."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "6- A developer needs to have records with specific field values in order to test a new Apex class. What should the developer do to ensure the data is available to the test?",
+        "tipo": "única",
+        "options": [
+          "a) Use SOQL to query the org for the required data.",
+          "b) Use Test.loadData() and reference a JSON file in Documents.",
+          "c) Use Test.loadData() and reference a CSV file in static resource.",
+          "d) Use Anonymous Apex to create required data."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "7- A developer deployed a trigger to update the Status__c of Assets related to an Account when the Account's status changes and a nightly integration that updates Accounts in bulk has started to fail with limit failures.",
+        "tipo": "única",
+        "options": [
+          "a) Add a limit clause to SOQL query on line 16 to limit the number of Assets queried for an Account.",
+          "b) Move all the logic to a Queueable class that queries for and updates the Assets and call it from the trigger.",
+          "c) Add List&lt;Asset&gt; assets = [SELECT Id, Status__c FROM Asset WHERE AccountId = acctId].",
+          "d) Change the getAssetsToUpdate method to process all Accounts in one call and call it outside of the for loop that starts on line 3."
+        ],
+        "correctAnswer": [3],
+        "image": "public/7.png"
+      },
+      {
+        "question": "8- A developer is asked to write helper methods that create test data for unit tests.\n\npublic testUtils{\n\n    public static Account createAccount(){\n        Account act = new Account();\n\n        // set some fields on acct...\n\n        return act;\n    }\n\n    //.. other methods ...\n}",
+        "tipo": "única",
+        "options": [
+          "a) Remove static from line 03.",
+          "b) Add @isTest above line 01.",
+          "c) Add @isTest above line 03.",
+          "d) Change public to private on line 01."
+        ],
+        "correctAnswer": [1],
+        "image": "public/8.png"
+      },
+      {
+        "question": "9- How can a developer check the test coverage of autolaunched Flows before deploying them in a change set?",
+        "tipo": "única",
+        "options": [
+          "a) Use SOQL and the Tooling API.",
+          "b) Use the Flow Properties page.",
+          "c) Use the Code coverage Setup page.",
+          "d) Use the ApexTestResults class."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "10- A deployment team wants to use a deployment script to automatically deploy to a sandbox during their development cycles. Which two tools can they use to run a script that deploys to a sandbox?",
+        "tipo": "múltiple",
+        "options": [
+          "a) Developer console.",
+          "b) SFDX CLI.",
+          "c) Change Sets.",
+          "d) Ant migration tool."
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "11- A developer identifies the following triggers on the Expense__c object:\ndeleteExpense,\napplyDefaultsToExpense,\nValidateExpenseUpdate;\n\nThe triggers process before delete, before insert, and before update events respectively.\n\nWhat two techniques should the developer implement to ensure trigger best practices are allowed?",
+        "tipo": "múltiple",
+        "options": [
+          "a) Create helper classes to execute the appropriate logic when a record is saved.",
+          "b) Maintain all three triggers on the Expense__c object, but move the Apex logic out of the trigger definition.",
+          "c) Unify the before insert and before update triggers and use flow for the delete action.",
+          "d) Unify all three triggers in a single trigger on the Expense__c object that includes all events."
+        ],
+        "correctAnswer": [0, 3]
+      },
+      {
+        "question": "12- What should a developer use to script the deployment and unit test execution as part of continuous integration?",
+        "tipo": "única",
+        "options": [
+          "a) Developer console.",
+          "b) Salesforce CLI.",
+          "c) VS Code.",
+          "d) Execute Anonymous."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "13- The Job_Application__c custom object has a field that is a master-detail relationship to the Contact object, where the Contact object is the master. As part of a feature implementation, a developer needs to retrieve a list containing all Contact records where the related Account Industry is 'Technology', while also retrieving the Contact's Job_Application__c records. Based on the object's relationships, what is the most efficient statement to retrieve the list of Contacts?",
+        "tipo": "única",
+        "options": [
+          "a) [SELECT id, [SELECT Id FROM Job_Applications__c] FROM Contact WHERE Accounts.Industry = 'Technology'];",
+          "b) [SELECT id, [SELECT Id FROM Job_Applications__r] FROM Contact WHERE Accounts.Industry = 'Technology'];",
+          "c) [SELECT id, [SELECT Id FROM Job_Application__c] FROM Contact WHERE Account.Industry = 'Technology'];",
+          "d) [SELECT id, [SELECT Id FROM Job_Application__r] FROM Contact WHERE Account.Industry = 'Technology'];"
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "14- What are three characteristics of change set deployments?",
+        "tipo": "múltiple",
+        "options": [
+          "a) Sending a change set between two orgs requires deployment connection.",
+          "b) Change sets can only be used between related organizations.",
+          "c) Deployment is done in one-way, single transaction.",
+          "d) Change sets can deploy custom settings data.",
+          "e) Change sets can be used to transfer records."
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "question": "15- What are the two benefits of using declarative customizations over code?",
+        "tipo": "múltiple",
+        "options": [
+          "a) Declarative customizations automatically generate test classes.",
+          "b) Declarative customizations generally require less maintenance.",
+          "c) Declarative customizations cannot generate runtime errors.",
+          "d) Declarative customizations automatically update with each Salesforce release."
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "16- A developer is creating a lightning web component to show a list of sales records. The Sales representative user should be able to see the commission field on each record. The Sales Assistant user should be able to see all fields on the records except the commission field. How should this be enforced so that the component works for both users without showing any errors?",
+        "tipo": "única",
+        "options": [
+          "a) Use lightning Locker Service to enforce Sharing rules and field-level security.",
+          "b) Use WITH SECURITY_ENFORCED in the SOQL that fetches the data for the component.",
+          "c) Use Lightning Data Service to get the collection of Sales Records.",
+          "d) Use security-stripInaccessible to remove fields inaccessible to the current user."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "17- A software company uses the following objects and relationships:\n* Case: To handle customer support issues.\n* Defect__c: A custom object to represent known issues with the company's software.\n* Case_Defect__c: A junction object between Case and Defect__c to represent that a defect is a cause of a customer issue.\n\nCase and Defect__c have Private organization-wide defaults.\n\nWhat should be done to share a specific Case_Defect__c record with a user?",
+        "tipo": "única",
+        "options": [
+          "A) Share the parent Defect__c record.",
+          "B) Share the parent Case record.",
+          "C) Share the parent Case and Defect__c records.",
+          "D) Share the Case_Defect__c record."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "18- A developer creates a new Apex trigger with a helper class, and writes a test class that only exercises 95% coverage of the new Apex Helper class.\nChange Set deployment to production fails with the test coverage warning:\nTest coverage of selected Apex Trigger is 0%, at least 1% test coverage is required.\n\nWhat should the developer do to successfully deploy the new Apex Trigger and helper class?",
+        "tipo": "única",
+        "options": [
+          "a) Run the tests using 'Run All Tests' method.",
+          "b) Remove the failing test methods from the test class.",
+          "c) Increase the test class coverage on the helper class.",
+          "d) Create a test class and method to cover the Apex trigger."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "19- Which statement describes the execution order when triggers are associated to the same object and event?",
+        "tipo": "única",
+        "options": [
+          "A) Trigger execution order cannot be guaranteed.",
+          "B) Triggers are executed in the order they are modified.",
+          "C) Triggers are executed in the order they are created.",
+          "D) Triggers are executed alphabetically by trigger name."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+          "question": "20- Which code displays the contents of a Visualforce page as pdf?",
+          "tipo": "única",
+          "options": [
+          "a) &lt;apex:page contentType='pdf'&gt;",
+          "b) &lt;apex:page renderAs='application/pdf'&gt;",
+          "c) &lt;apex:page renderAs='pdf'&gt;",
+          "d) &lt;apex:page contentType='application/pdf'&gt;"
+          ],
+          "correctAnswer": [2]
+      },
+      {
+        "question": "21- Universal Containers wants to ensure that all new leads created in the system have a valid email address. They have already created a validation rule to enforce this requirement, but want to add an additional layer of validation using automation.\nWhat would be the best solution for this requirement?",
+        "tipo": "única",
+        "options": [
+          "a) Submit a REST API callout with a JSON payload and validate the fields on a third party system.",
+          "b) Use a custom Lightning Web component to make a callout to validate the fields on a third party system.",
+          "c) Use an Approval Process to enforce the completion of a valid email address using an outbound message action.",
+          "d) Use a before-save Apex trigger on the Lead object to validate the email address and display an error message if it is invalid."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "22- What are two ways a developer can get the status of an enqueued job for a class that implements the queueable interface?",
+        "tipo": "múltiple",
+        "options": [
+          "A) View the Apex Flex Queue",
+          "B) View the Apex Jobs page",
+          "C) Query the AsyncApexJob object",
+          "D) View the Apex Status Page"
+        ],
+        "correctAnswer": [ 1, 2]
+      },
+      {
+          "question": "23- Which Statement generates a list of Leads and Contacts that have a field with the phrase 'ACME'?",
+          "tipo": "única",
+          "options": [
+            "a) List &lt;sObject&gt; searchList = [FIND '*ACME*' IN ALL FIELDS RETURNING Contact, Lead];",
+            "b) Map &lt;sObject&gt; searchList = [FIND '*ACME*' IN ALL FIELDS RETURNING Contact, Lead];",
+            "c) List &lt;List &lt;sObject&gt;&gt; searchList = [FIND '*ACME*' IN ALL FIELDS RETURNING Contact, Lead];",
+            "d) List &lt;List &lt;sObject&gt;&gt; searchList = [SELECT Name, ID FROM Contact, Lead WHERE Name LIKE '%ACME%'];"
+          ],
+          "correctAnswer": [0]
+        },
+      {
+        "question": "24- Given the following Anonymous block:",
+        "tipo": "única",
+        "options": [
+          "a) The transaction will succeed and changes will be committed.",
+          "b) The try-catch block will handle exceptions thrown by governor limits.",
+          "c) The transaction will fail due to exceeding the governor limit.",
+          "d) The try-catch block will handle any DML exceptions thrown."
+        ],
+        "correctAnswer": [2],
+        "image": "public/24.png"
+      },
+      {
+        "question": "25- A developer must create a DrayList class that provides capabilities defined in the Sortable and Drawable interfaces.",
+        "tipo": "única",
+        "options": [
+          "A) public class DrawList implements Sortable, Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "B) public class DrawList extends Sortable, Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "C) public class DrawList extends Sortable,  extends Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}",
+          "D) public class DrawList implements Sortable, implements Drawable{\n    public void sort(){ /*Implementation*/ }\n    public void draw(){ /*Implementation*/ }\n}"
+        ],
+        "correctAnswer": [0],
+          "image": "public/25.png"
+      },
+      {
+        "question": "26- Universal Containers wants Opportunities to no longer be editable when it reaches the Closed/won stage.\nWhich two strategies can a developer use to accomplish this?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Use a before-save Apex trigger.",
+          "B) Use a validation rule.",
+          "C) Use an automatically launched Approval Process.",
+          "D) Use an auto-response rule."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "27- When using Salesforce DX, what does a developer need to create and manage scratch orgs?",
+        "tipo": "única",
+        "options": [
+          "A) Environment hub.",
+          "B) Dev Hub.",
+          "C) Sandbox.",
+          "D) Production."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "28- A developer has a Visualforce page and custom controller to save Account records. The developer wants to display any validation rule violations to the user.\nHow can the developer make sure the validation rules violations are displayed?",
+        "tipo": "única",
+        "options": [
+          "a) Include &lt;apex:messages&gt; on the Visualforce page.",
+          "b) Perform the DML using the Database.upsert() method.",
+          "c) Use a try/catch with a custom exception class.",
+          "d) Add custom controller attributes to display the message."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "29- Flow builder uses an Apex Action to provide additional information about multiple Contacts, sorted in a custom class, ContactInfo.\nWhich is the correct definition of the Apex method that gets the additional information?",
+        "tipo": "única",
+        "options": [
+          "A) @InvocableMethod(label='Additional Info')\n    public ContactInfo getInfo(Id contactId){\n        /* Implementation */ }",
+          "B) @InvocableMethod(label='Additional Info')\n    public static ContactInfo getInfo(Id contactId){\n        /* Implementation */ }",
+          "C) @InvocableMethod(label='Additional Info')\n    public static List&lt;ContactInfo&gt; getInfo(List&lt;Id&gt; contactId){\n        /* Implementation */ }",
+          "D) @InvocableMethod(label='Additional Info')\n     public List&lt;ContactInfo&gt; getInfo(List&lt;Id&gt; contactId){\n        /* Implementation */ }"
+        ],
+        "correctAnswer": [2],
+          "image": "public/29.png"
+      },
+      {
+        "question": "30- What are two ways for a developer to execute tests in an org?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Bulk API.",
+          "B) Tooling API.",
+          "C) Developer Console.",
+          "D) Metadata API."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "31, A developer created a Lightning web component called statusComponent to be inserted into the Account record page. Which two things should the developer do to make this component available?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Add &lt;masterLabel&gt;Account&lt;/masterLabel&gt; to the statusComponent.js-meta.xml file.",
+          "B) Set isExposed to true in the statusComponent.js-meta.xml file.",
+          "C) Add &lt;target&gt;lightning__RecordPage&lt;/target&gt; to the statusComponent.js file.",
+          "D) Add &lt;target&gt;lightning__RecordPage&lt;/target&gt; to the statusComponent.js-meta.xml file."
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "32- A developer creates a batch Apex job to update a large number of records, and receives reports of the job timing out and not completing.\nWhat is the first step towards troubleshooting the issue?",
+        "tipo": "única",
+        "options": [
+          "A) Check the asynchronous job monitoring page to view the job status and logs.",
+          "B) Disable the batch job and recreate it with a smaller number of records.",
+          "C) Check the debug logs for the batch job.",
+          "D) Decrease the batch size to reduce the load of the system."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "33- Which are two phases in the Aura application event propagation framework?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Control.",
+          "B) Emit.",
+          "C) Bubble.",
+          "D) Default."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "34- What is an example of a polymorphic lookup field in Salesforce?",
+        "tipo": "única",
+        "options": [
+          "A) The WhatId field on the Standard Event object.",
+          "B) A custom field, Link__c, on the standard Contact object that looks up to an Account or a Campaign.",
+          "C) The LeadId and ContactId fields on the standard Campaign Member object.",
+          "D) The ParentId field on the standard Account object."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "35- Cloud Kicks Fitness, an ISV Salesforce partner, is developing a managed package application. One of the application modules allows the user to calculate body fat using the Apex class, BodyFat, and its method, calculateBodyFat(). The product owner wants to ensure this method is accessible by the consumer of the application when developing customizations outside the ISV's package namespace.\nWhich approach should a developer take to ensure calculateBodyFat() is accessible outside the package namespace?",
+        "tipo": "única",
+        "options": [
+          "a) Declare the class as global and use the public access modifier on the method.",
+          "b) Declare the class as public and use the global access modifier on the method.",
+          "c) Declare the class and method using the public access modifier.",
+          "d) Declare the class and method using the global access modifier."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "36- Which three Salesforce resources can be accessed from a Lightning web component?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Third-party web components.",
+          "B) SVG resources.",
+          "C) All external libraries.",
+          "D) Content asset files.",
+          "E) Static resources."
+        ],
+        "correctAnswer": [1, 3, 4]
+      },
+      {
+        "question": "37- Which statement should be used to allow some of the records in a list of records to be inserted if others fail to be inserted?",
+        "tipo": "única",
+        "options": [
+          "a) Database.insert(records, true)",
+          "b) Database.insert(records, false)",
+          "c) insert(records, false)",
+          "d) insert records."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "38- Universal Hiring uses Salesforce to capture job applications. A Salesforce administrator created two custom objects; Job__c acting as the master object, Job_Application__c acting as the detail. Within the Job__c object, a custom multi-select picklist, Preferred_Locations__c, contains a list of approved states for the positions. Each Job_Application__c record relates to a Contact within the system through a master-detail relationship. Recruiters have requested the ability to view whether the Contact's Mailing State value matches a value selected on the Preferred_Locations__c field, within the Job_Application__c record. Recruiters would like this value to be kept in sync if changes occur to the Contact's Mailing State.\nWhat is the recommended tool a developer should use to meet the business requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Roll-up summary field.",
+          "B) Record-triggered flow.",
+          "C) Formula field.",
+          "D) Apex trigger."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "39- Refer to the following Apex code What is the value of the X when it is written to the debug log?",
+        "tipo": "única",
+        "options": [
+          "A) 0.",
+          "B) 1.",
+          "C) 2.",
+          "D) 3."
+        ],
+        "correctAnswer": [2],
+          "image": "public/39.png"
+      },
+      {
+        "question": "40- What is a consideration for running a flow in debug mode?",
+        "tipo": "única",
+        "options": [
+          "a) Callouts to external systems are not executed when debugging a flow.",
+          "b) When debugging a scheduled-triggered flow, the flow starts only for one record.",
+          "c) DML Operations will be rolled back when the debugging ends.",
+          "d) Clicking Pause allows an element to be replaced in the flow."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "41- An Apex method, getAccounts, that returns a list of Accounts given a searchTerm, is available for Lightning Web Components to use.\nWhat is the correct definition of a Lightning Web Component property that uses the getAccounts method?",
+        "tipo": "única",
+        "options": [
+          "A) @wire(getAccounts, '$searchTerm')\n   accountList;",
+          "B) @AuraEnabled(getAccounts, {searchTerm: '$searchTerm'})\n   accountList;",
+          "C) @wire(getAccounts, {searchTerm: '$searchTerm'})\n   accountList;",
+          "D) @AuraEnabled(getAccounts, '$searchTerm')\n   accountList;"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "42- In terms of the MVC paradigm, what are two advantages of implementing the view layer of a Salesforce application using Lightning Web Component based development over Visualforce?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Self-contained and reusable units of an application.",
+          "B) Built-in standard and custom set controllers.",
+          "C) Log capturing via the Debug Logs Setup page.",
+          "D) Rich component ecosystem."
+        ],
+        "correctAnswer": [0, 3]
+      },
+      {
+        "question": "43- Universal Containers uses out-of-the-box order management, that has a Master-Detail relationship between Order and Order Line Item. UC stores the availability date on each Order Line Item and Orders are only shipped when all of the Order Line Items are available. Which method should be used to calculate the estimated ship date for an order?",
+        "tipo": "única",
+        "options": [
+          "A) Use a MAX Roll-Up Summary field on the latest availability date fields.",
+          "B) Use a LATEST formula on each of the latest availability date fields.",
+          "C) Use a DAYS formula on each of the availability date fields and a COUNT Roll-Up Summary field on the Order.",
+          "D) Use a CEILING formula on each of the latest availability date fields."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "44- A software company is using Salesforce to track the companies they sell their software to in the Account object. They also use Salesforce to track bugs in their software with a custom object, Bug__c. As part of a process improvement initiative, they want to be able to report on which companies have reported which bugs. Each company should be able to report multiple bugs and bugs can also be reported by multiple companies. What is needed to allow this reporting?",
+        "tipo": "única",
+        "options": [
+          "a) Roll-up summary field of Bug__c on Account.",
+          "b) Junction object between Bug__c and Account.",
+          "c) Master-detail field on Bug__c to Account.",
+          "d) Lookup field on Bug__c to Account."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "45- A developer must provide custom user interfaces when users edit a Contact in either Salesforce Classic or Lightning Experience. What should the developer use to override the Contact's Edit button and provide this functionality?",
+        "tipo": "única",
+        "options": [
+          "A) A lightning page in Salesforce Classic and a Visualforce page in Lightning Experience.",
+          "B) A Lightning component in Salesforce Classic and a Lightning component in Lightning Experience.",
+          "C) A Visualforce page in Salesforce Classic and a Lightning page in Lightning Experience.",
+          "D) A Visualforce page in Salesforce Classic and a Lightning component in Lightning Experience."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "46- A developer wants to send an outbound message when a record meets a specific criteria. Which two features satisfy this use case?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Flow builder can be used to check the record criteria and send an outbound message.",
+          "B) Approval Process can be used to check the record criteria and send an outbound message without Apex code.",
+          "C) Next Best Action can be used to check the record criteria and send an outbound message.",
+          "D) Entitlement Process can be used to check the record criteria and send an outbound message without Apex code."
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "question": "47- A developer created a child Lightning web component nested inside a parent Lightning web component. The parent component needs to pass a string value to the child component.\nIn which two ways can this be accomplished?",
+        "tipo": "múltiple",
+        "options": [
+          "A) The parent component can use the Apex controller class to send data to the child component.",
+          "B) The parent component can use a custom event to pass the data to the child component.",
+          "C) The parent component can invoke a public method in the child component.",
+          "D) The parent component can use a public property to pass the data to the child component."
+        ],
+        "correctAnswer": [2, 3]
+      },
+      {
+        "question": "48- A developer has an integer variable called maxAttempts. The developer needs to ensure that once maxAttempts is initialized, it preserves its value for the length of the Apex transaction; while being able to share the variable's state between trigger executions.\nHow should the developer declare maxAttempts to meet these requirements?",
+        "tipo": "única",
+        "options": [
+          "A) Declare maxAttempts as a variable on a helper class.",
+          "B) Declare maxAttempts as a member variable on the trigger definition.",
+          "C) Declare maxAttempts as a private static variable on a helper class.",
+          "D) Declare maxAttempts as a constant using the static and final keywords."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "49- A developer created these three Rollup Summary fields in the custom object, Project__c:\nTotal_Timesheets__c\nTotal_Approved_Timesheets__c\nTotal_Rejected_Timesheets__c\nThe developer is asked to create a new field that shows the ratio between rejected and approved timesheets for a given project. Which should the developer use to implement the business requirement in order to minimize maintenance overhead?",
+        "tipo": "única",
+        "options": [
+          "A) Formula field.",
+          "B) Apex trigger.",
+          "C) Record-triggered flow.",
+          "D) Roll-up summary field."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "50- Consider the following code snippet for a Visualforce page that is launched using a Custom Button on the Account detail page layout.\n&lt;apex:page standardController=\"Account\"&gt;\n    &lt;!-- Additional UI elements--&gt;\n    &lt;apex:commandButton action=\"{!save}\" value=\"Save\"&gt;\n&lt;/apex:page&gt;\nWhen the Save button is pressed the developer must perform a complex validation that involves multiple objects and, upon success, redirect the user to another Visualforce page. What can the developer use to meet this business requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Apex trigger.",
+          "B) Controller extension.",
+          "C) Custom controller.",
+          "D) Validation rule."
+        ],
+        "correctAnswer": [1],
+          "image": "public/50.png"
+      },
+      {
+        "question": "51- A developer creates a custom exception as shown below:\npublic class ParityException extends Exception{}\nWhat are two ways the developer can fire the exception in Apex? (OJO QUE DICE FIRE)",
+        "tipo": "múltiple",
+        "options": [
+          "A) new ParityException();",
+          "B) new ParityException('parity does not match');",
+          "C) throw new ParityException('parity does not match');",
+          "D) throw new ParityException;"
+        ],
+        "correctAnswer": [2, 3]
+      },
+      {
+        "question": "52- Universal Containers has an order system that uses an Order Number to identify an order for customers and service agents. Order records will be imported into Salesforce. How should the Order number field be defined in Salesforce?",
+        "tipo": "única",
+        "options": [
+          "A) Indirect Lookup.",
+          "B) External ID and Unique.",
+          "C) Lookup.",
+          "D) Direct Lookup."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "53- What are two use cases for executing Anonymous Apex code?",
+        "tipo": "múltiple",
+        "options": [
+          "A) To delete 15.000 inactive Accounts in a single transaction after a deployment.",
+          "B) To schedule an Apex class to run periodically.",
+          "C) To run a batch Apex class to update all Contacts.",
+          "D) to add unit test code coverage to an org."
+        ],
+        "correctAnswer": [0, 3]
+      },
+      {
+        "question": "54- A developer needs to allow users to complete a form on an Account record that will create a record for a custom object. The form needs to display different fields depending on the user's job role. The functionality should only be available to a small group of users. Which three things should the developer do to satisfy these requirements?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Create a lightning web component.",
+          "B) Add a dynamic action to the account record page.",
+          "C) Create a Dynamic Form.",
+          "D) Create a Custom permission for the users.",
+          "E) Add a Dynamic Action to the Users' assigned Page Layouts."
+        ],
+        "correctAnswer": [0, 2, 3]
+      },
+      {
+        "question": "55- Which annotation should a developer use on an Apex method to make it available to be wired to a property in a Lightning web component?",
+        "tipo": "única",
+        "options": [
+          "A) @RemoteAction(cacheable = true)",
+          "B) @AuraEnabled",
+          "C) @AuraEnabled(cacheable = true)",
+          "D) @RemoteAction"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "56- The following code snippet is executed by a Lightning web component in an environment with more than 2000 lead records:\nWhich governor limit will likely be exceeded within the Apex transaction?",
+        "tipo": "única",
+        "options": [
+          "A) Total number of SOQL queries issued.",
+          "B) Total number of records processed as a result of DML statements.",
+          "C) Total number of DML statements issued.",
+          "D) Total number of records retrieved by SOQL queries."
+        ],
+        "correctAnswer": [1],
+          "image": "public/56.png"
+      },
+      {
+        "question": "57- While writing an Apex class, a developer wants to make sure that all functionality being developed is handled as specified by the requirements. Which approach should the developer use to be sure that the Apex class is working according to specifications?",
+        "tipo": "única",
+        "options": [
+          "A) Run the code in an Execute Anonymous block in Developer Console.",
+          "B) Include try/catch block to the Apex class.",
+          "C) Include a savepoint and Database.rollback().",
+          "D) Create a test class to execute the business logic and run the test in the developer console."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "58- A developer is tasked with building a custom Lightning web component to collect Contact information. The form will be shared among many different types of users in the org. There are security requirements that only certain fields should be edited and viewed by certain groups of users. What should the developer use in their lightning web component to support security requirements?",
+        "tipo": "única",
+        "options": [
+          "A) lightning-input-field.",
+          "B) ui-input-field.",
+          "C) form-input-field.",
+          "D) aura-input-field."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "59- A developer creates a lightning web component that imports a method within an Apex Class. When a Validate button is pressed, the method runs to execute complex validations. In this implementation scenario, which two options are part of the Controller according to the MVC architecture?",
+        "tipo": "múltiple",
+        "options": [
+          "A) JS file.",
+          "B) HTML file.",
+          "C) Apex class.",
+          "D) XML file."
+        ],
+        "correctAnswer": [0, 2]
+      },
+      {
+        "question": "60- Universal Containers wants to back up all the data and attachments in its salesforce org once a month. Which approach should a developer use to meet this requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Create a Schedulable Apex Class.",
+          "B) Use the Data Loader command line.",
+          "C) Schedule a report.",
+          "D) Define a Data export scheduled job."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "61- How does the lightning Component framework help developers implement solution faster?",
+        "tipo": "única",
+        "options": [
+          "A) By providing code review standards and processes.",
+          "B) By providing an Agile process with default steps.",
+          "C) By providing change history and version control.",
+          "D) By providing device-awareness for mobile and desktops."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "62- Which code in a Visualforce page and/or controller might present a security vulnerability?",
+        "tipo": "única",
+        "options": [
+          "A) &lt;apex:outputText value=\"{!$CurrentPage.parameters.userInput}\"&gt;",
+          "B) &lt;apex:outputText value=\"{!ctrl.userInput}\" rendered=\"{!isEditable}\"&gt;",
+          "C) &lt;apex:outputText escape=\"false\" value=\"{!$CurrentPage.parameters.userInput}\"&gt;",
+          "D) &lt;apex:outputText value=\"{!ctrl.userInput}\"&gt;"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "63- The following Apex method is part of the ContactService class that is called from a trigger:\npublic static void setBusinessUnitToEMEA(Contact thisContact){\n    thisContact.Business__Unit__c = 'EMEA';\n    update thisContact;\n}\nHow should the developer modify the code to ensure best practices are met?",
+        "tipo": "única",
+        "options": [
+          "a) public static void setBusinessUnitToEMEA(Contact thisContact){\n    list&lt;Contact&gt; contacts = new List&lt;Contact&gt;();\n    contacts.add(thisContact.Business__Unit__c = 'EMEA');\n    update contacts;",
+          "b) public static void setBusinessUnitToEMEA(List&lt;Contact&gt; contacts){\n    for(Contact thisContact : contacts){\n        thisContact.Business__Unit__c = 'EMEA';\n        update contacts[0];\n    }",
+          "c) public static void setBusinessUnitToEMEA(List&lt;Contact&gt; contacts){\n    for(Contact thisContact : contacts){\n        thisContact.Business__Unit__c = 'EMEA';\n    }\n    update contacts;",
+          "d) public static void setBusinessUnitToEMEA(List&lt;Contact&gt; contacts){\n    contacts[0].Business__Unit__c = 'EMEA';\n    update contacts[0];"
+        ],
+        "correctAnswer": [2],
+        "image": "public/63.png"
+      },
+      {
+        "question": "64- Universal Containers recently transitioned from Classic to Lightning Experience. One of its business processes requires certain values from the Opportunity object to be sent via an HTTP REST callout to its external order management system when the user presses a custom button on the Opportunity detail page. Example values are as follows:\nName\nAccount\nAccount\nWhich two methods should the developer implement to fulfill the business requirement?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Create a custom Visualforce quick action that performs the HTTP REST Callout, and use a Visualforce quick action to expose the component to the detail page.",
+          "B) Create a remote action on the opportunity object that executes an apex immediate action to perform the HTTP REST callout whenever the Opportunity is updated.",
+          "C) Create an after update trigger on the Opportunity object that calls a helper method using @Future(Callout=true) to perform the HTTP REST callout.",
+          "D) Create a Lightning component quick action that performs the HTTP REST callout, and use a Lightning Action to expose the component on the Opportunity detail page."
+        ],
+        "correctAnswer": [ 3]
+      },
+      {
+        "question": "65- A developer completed modifications to a customized feature that is comprised of two elements:\nApex trigger\nTrigger handler Apex class\nWhat are two factors that the developer must take into account to properly deploy the modification to the production environment?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Test methods must be declared with testMethod keyword.",
+          "B) Apex classes must have at least 75% code coverage org-wide.",
+          "C) At least one line of code must be executed for the apex trigger.",
+          "D) All methods in the test classes must use @isTest."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "66- A developer needs to prevent the creaton of Request_c records when certain conditions exist inthe system. A RequestLogic class exists that checks the conditions.",
+        "tipo": "única",
+        "options": [
+          "A)",
+          "B)",
+          "C)",
+          "D)"
+        ],
+        "correctAnswer": [3],
+         "image": "public/66.png"
+      },
+      {
+        "question": "67- A custom picklist field, Food Preterent__c, exists on a custom object. The picklist contains the following options: 'Vegan', 'Kosher', 'No Preference'. The developer must ensure a value is populated every time a record is created or updated.",
+        "tipo": "única",
+        "options": [
+          "A) Mark the field as Required on the field definition.",
+          "B) Mark the field as Required on the objects page layout.",
+          "C) Write an apex Trigger to ensure a value is selected.",
+          "D) Set 'use the first value in the list as de default value' to true."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "68- A developer must implement a Check Payment Processor class that provides check processing payment capabilities that adhere to what is defined for payments in the ayment Processor interface.",
+        "tipo": "única",
+        "options": [
+          "A)",
+          "B)",
+          "C)",
+          "D)"
+        ],
+        "correctAnswer": [0],
+        "image": "public/68.png"
+      },
+      {
+        "question": "69- A Salesforce administrator used Flow Builder to create a flow named 'accountOnboarding'. The flow must be used inside an Aura component. Which tag should a developer use to display the flow in the component?",
+        "tipo": "única",
+        "options": [
+          "A) aura-flow",
+          "B) lightning-flow",
+          "C) aura-flow",
+          "D) lightning-flow"
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "70- A team of many developers work in their own individual orgs that have the same configuration as the production org. Which type of org is best suited for this scenario?",
+        "tipo": "única",
+        "options": [
+          "A) Developer Sandbox",
+          "B) Full Sandbox",
+          "C) Developer Edition",
+          "D) Partner Developer Edition"
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "71- Since Aura application events follow the traditional publish-subscribe model, which method is used to fire an event?",
+        "tipo": "única",
+        "options": [
+          "A) registerEvent()",
+          "B) fire()",
+          "C) fireEvent()",
+          "D) emit()"
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "72- A developer must create a Lightning component that allows users to input Contact record information to create a Contact record, including a Salary c custom field. What should the developer use, along with a lightning-record-edit-form, so that Salary field functions as a currency input and is only viewable and editable by users that have the correct field level permissions on Salary_c?",
+        "tipo": "única",
+        "options": [
+          "A) &lt;lightning-input-currency value='Salary__c'&gt; &lt;/lightning-input-currency&gt;",
+          "B) &lt;lightning-input type='number' value='Salary__c' formatter='currency'&gt; &lt;/lightning-input&gt;",
+          "C) &lt;lightning-input-field field='Salary__c'&gt; &lt;/lightning-input-field&gt;",
+          "D) &lt;lightning-formatted-number value='Salary__c' format-style='currency'&gt; &lt;/lightning-formatted-number&gt;"
+        ],
+        "correctAnswer": [2]
+      },    
+      {
+        "question": "73- For which three items can a trace flag be configured?",
+        "tipo": "múltiple",
+        "options": [
+          "A) User",
+          "B) Visualforce",
+          "C) Apex Class",
+          "D) Apex Trigger",
+          "E) Flow"
+        ],
+        "correctAnswer": [0, 2, 3]
+      },
+      {
+        "question": "74- Which two settings must be defined in order to update a record of a junction object?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Read access on the primary relationship",
+          "B) Read/Write access on the primary relationship",
+          "C) Read/Write access on the secondary relationship",
+          "D) Read/Write access on the junction object"
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "75- Which exception type cannot be caught?",
+        "tipo": "única",
+        "options": [
+          "A) CalloutException",
+          "B) A custom exception",
+          "C) NoAccessException",
+          "D) LimitException"
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "76- A developer must perform a complex SOQL query that joins two objects in a Lightning component. How can the Lightning component execute the query?",
+        "tipo": "única",
+        "options": [
+          "A) Use the Salesforce Streaming API to perform SOQL query.",
+          "B) Write the query in a custom Lightning web component wrapper and invoke from the Lightning component.",
+          "C) Invoke an Apex class with the method annotated as @AuraEnable to perform Query.",
+          "D) Create a flow to execute the query and invoke from the Lightning component."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "77- What are three capabilities of the <ltng:require> tag when loading JavaScript resources in Aura components?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Specifying loading order",
+          "B) Loading Scripts in Parallel",
+          "C) Loading externally hosted scripts",
+          "D) One-time loading for duplicate scripts",
+          "E) Loading files from Documents"
+        ],
+        "correctAnswer": [0, 2, 3]
+      },
+      {
+        "question": "78- Which code statement includes an Apex method named updateAccounts in the class AccountController for use in a Lightning web component?",
+        "tipo": "única",
+        "options": [
+          "A) import updateAccounts from '@salesforce/apex/AccountController';",
+          "B) import updateAccounts from 'AccountController.updateAccounts';",
+          "C) import updateAccounts from 'AccountController';",
+          "D) import updateAccounts from '@salesforce/apex/AccountController.updateAccounts';"
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "79- Given the following Apex statement: Account myAccount = [SELECT ID, Name FROM Account]; What occurs when more than one Account is returned by the SOQL query?",
+        "tipo": "única",
+        "options": [
+          "A) The query fails and an error is written to the debug log.",
+          "B) The first Account returned is assigned to myAccount.",
+          "C) The variable, myAccount, is automatically cast to the List data type.",
+          "D) An unhandled exception is thrown and the code terminates."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "80- Managers at Universal Containers want to ensure that only decommissioned containers are able to be deleted in the system. To meet the business requirement, a Salesforce developer adds 'Decommissioned' as a picklist value for the Status__c custom field within the Container__c object. Which two approaches could a developer use to enforce that only Container records with a status of 'Decommissioned' can be deleted?",
+        "tipo": "múltiple",
+        "options": [
+          "A) After record-triggered flow",
+          "B) Validation rule",
+          "C) Before record-triggered flow",
+          "D) Apex trigger"
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "81- A developer must write an Apex method that will be called from a Lightning component. The method may delete an Account stored in the accountRec variable. Which method should a developer use to ensure only users that should be able to delete Accounts can successfully perform deletions?",
+        "tipo": "única",
+        "options": [
+          "A) Schema.sObjectType.Account.isDeletable()",
+          "B) accountRec.sObjectType.isDeletable()",
+          "C) Account.isDeletable()",
+          "D) accountRec.isDeletable()"
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "82- A developer at All Computing is tasked to create the supporting test class for a programmatic customization that leverages records stored with the custom object, Pricing Structure. AW Computing has a complex pricing structure for each item in the store, spanning more than 500 records. Which two approaches can the developer use to ensure pricing structure records are available when the test class is executed?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Use a Test Data Factory class",
+          "B) Use the @IsTest (SeeAllData=true) annotation",
+          "C) Use the Test.loadTest() method",
+          "D) Use without sharing on the class declaration"
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "question": "83- A developer wants to get access to the standard price book in the org while writing a test class that covers an Opportunity Line Item trigger. Which method allows access to the price book?",
+        "tipo": "única",
+        "options": [
+          "A) Use Test.loadData and a static resource to load a standard price book",
+          "B) Use @IsTest (SeeAllData=true) and delete the existing standard price book",
+          "C) Use Test.getStandardPricebookId() to get the standard price book ID",
+          "D) Use @TestVisible to allow the test method to see the standard price book"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "84- A developer is alerted to an issue with a custom Apex trigger that is causing records to be duplicated. What is the most appropriate debugging approach to troubleshoot the issue?",
+        "tipo": "única",
+        "options": [
+          "A) Review the Historical Event logs to identify the source of the issue.",
+          "B) Add system.debug statements to the code to track the execution flow and identify the issue.",
+          "C) Use the Apex Interactive Debugger to step through the code and identify the issue.",
+          "D) Disable the trigger in production and test to see if the issue still occurs."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "85- What should a developer do to check the code coverage of a class after running all tests?",
+        "tipo": "única",
+        "options": [
+          "A) Select and view the class on the Apex Test Execution page in the Developer Console.",
+          "B) View the code coverage percentage for the class using the Overall Code Coverage panel in the Developer Console Tests tab.",
+          "C) View the Code Coverage column in the list view on the Apex Classes page.",
+          "D) View the Class Test Percentage tab on the Apex Class list view in Salesforce Setup."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "86- If Apex code executes inside the execute() method of an Apex class when implementing the Batchable interface, which two statements are true regarding governor limits?",
+        "tipo": "múltiple",
+        "options": [
+          "A) The Apex governor limits are reset for each iteration of the execute() method.",
+          "B) The Apex governor limit cannot be exceeded due to the asynchronous nature of the transaction.",
+          "C) The Apex governor limits are omitted while calling the constructor of the Apex class.",
+          "D) The Apex governor limits will use the asynchronous limit levels."
+        ],
+        "correctAnswer": [0, 3]
+      },
+      {
+        "question": "87- A custom Visualforce controller calls the ApexPages.addMessage() method, but no messages are rendering on the page. Which component should be added to the Visualforce page to display the message?",
+        "tipo": "única",
+        "options": [
+          "A) &lt;apex:pagemessage severity='info' /&gt;",
+          "B) &lt;apex:pageMessages /&gt;",
+          "C) &lt;apex:facet name='messages' /&gt;",
+          "D) &lt;apex:message for='info' /&gt;"
+        ],
+        "correctAnswer": [1]
+      },
+      
+      {
+        "question": "88- A developer creates a new Apex trigger with a helper class, and writes a test class that only exercises 95% coverage of the new Apex helper class. Change Set deployment to production fails with the test coverage warning: 'Test coverage of selected Apex Trigger is 0%, at least 1% test coverage is required.' What should the developer do to successfully deploy the new Apex trigger and helper class?",
+        "tipo": "única",
+        "options": [
+          "A) Remove the failing test methods from the test class.",
+          "B) Increase the test class coverage on the helper class.",
+          "C) Create a test class and method to cover the Apex trigger.",
+          "D) Run the test using the 'Run All Test' method."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "89- A developer needs to allow users to complete a form on an Account record that will create a record for a custom object. The form needs to display different fields depending on the user's job role. The functionality should only be available to a small group of users. Which three steps should the developer do to satisfy these requirements?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Create a Lightning web component.",
+          "B) Create a Dynamic Form.",
+          "C) Create a Custom Permission for the users.",
+          "D) Add a Dynamic Action to the Account Record Page.",
+          "E) Add a Dynamic Action to the Users' assigned Page Layouts."
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "question": "90- A developer is designing a new application on the Salesforce platform and wants to ensure it can support multiple tenants effectively. Which design framework should the developer consider to ensure scalability and maintainability?",
+        "tipo": "única",
+        "options": [
+          "A) Agile Development.",
+          "B) Flux (view, action, dispatcher, and store).",
+          "C) Model-View-Controller (MVC).",
+          "D) Waterfall model."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "91- How is a controller and extension specified for a custom object named 'Notice' on a Visualforce page?",
+        "tipo": "única",
+        "options": [
+          "A) apex:page controllers='Notice__c, myControllerExtension'",
+          "B) apex:page = Notice extends ='myControllerExtension'",
+          "C) apex:page standardController='Notice__c' extensions='myControllerExtension'",
+          "D) apex:page controller='Notice__c' extensions='myControllerExtension'"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "92- What are two characteristics related to formulas?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Fields that are used in a formula field can be deleted or edited without editing the formula.",
+          "B) Formulas can reference values in related objects.",
+          "C) Formulas are calculated at runtime and are not stored in the database.",
+          "D) Formulas can reference themselves."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "93- Universal Containers wants to ensure that all new leads created in the system have a valid email address. They have already created a validation rule to enforce this requirement, but want to add an additional layer of validation using automation. What would be the best solution for this requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Use an approval process to enforce the completion of a valid email address using an outbound message action.",
+          "B) Use a before-save Apex trigger on the Lead object to validate the email address and display an error message if it is invalid.",
+          "C) Use a custom lightning web component to make a callout to validate the fields on a third-party system.",
+          "D) Submit a REST API Callout with a JSON payload and validate the fields on a third-party system."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "94- A lead developer creates an Apex interface called Laptop. Consider the following code snippet:\n\npublic class Silverlaptop {\n    //code implementation\n}\n\nHow can a developer use the Laptop interface within the Silver Laptop class?",
+        "tipo": "única",
+        "options": [
+          "A) @Extends(class='Laptop') public class SilverLaptop",
+          "B) public class SilverLaptop implements Laptop",
+          "C) @Interface(class='Laptop') public class SilverLaptop",
+          "D) public class SilverLaptop extends Laptop"
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "95- A developer is tasked to perform a security review of the contactSearch Apex class that exists in the system. Within the class, the developer identifies the following method as a security threat:\n\nList<Contact> performSearch (String lastName) {\n    return Database.query('SELECT Id, FirstName, LastName FROM Contact WHERE LastName Like \'%' + lastName + '%\'');\n}\n\nWhat are two ways the developer can update the method to prevent a SOQL injection attack? Choose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Use the @ReadOnly annotation and with sharing keyword on the class.",
+          "B) Use a regular expression on the parameter to remove special characters.",
+          "C) Use the escapeSingleQuotes method to sanitize the parameter before its use.",
+          "D) Use variable binding and replace the dynamic query with static SOQL."
+        ],
+        "correctAnswer": [2, 3],
+        "image": "public/95.png"
+      },
+      {
+        "question": "96- What does the Lightning Component framework provide to developers?",
+        "tipo": "única",
+        "options": [
+          "A) Extended governor limits for applications",
+          "B) Support for Classic and Lightning UIs",
+          "C) Prebuilt components that can be reused.",
+          "D) Templates to create custom components."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "97- What is the result of the following code?",
+        "tipo": "única",
+        "options": [
+          "A) The record will be created and no error will be reported.",
+          "B) The record will not be created and no error will be reported.",
+          "C) The record will be created and a message will be in the debug log.",
+          "D) The record will not be created and an exception will be thrown."
+        ],
+        "correctAnswer": [1],
+        "image": "public/97.png"
+      },
+      {
+        "question": "98- The Account object in an organization has a master-detail relationship to a child object called branch. The following automations exist:\n\nRoll up summary fields.\nCustom validation rules.\nDuplicate rules.\n\nA developer created a trigger on the Account object.\n\nWhich two things should the developer consider while testing the trigger code?\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) The validation rules will cause the trigger to fire again.",
+          "B) Rollup summary fields can cause the parent record to go through Save.",
+          "C) The trigger may fire multiple times during the transaction.",
+          "D) Duplicate rules are executed once all DML operations commit to the database."
+        ],
+        "correctAnswer": [2, 3]
+      },
+      {
+        "question": "99- A developer edition org has five existing accounts. A developer wants to add 10 more accounts for testing purposes.\n\nThe following code is executed in the developer console using the Execute Anonymous window:\nHow many total accounts will be in the org after this code is executed?",
+        "tipo": "única",
+        "options": [
+          "A) 5",
+          "B) 6",
+          "C) 10",
+          "D) 15"
+        ],
+        "correctAnswer": [1],
+        "image": "public/99.png"
+      },
+      {
+        "question": "100- How does the Lightning Component framework help developers implement solutions faster?",
+        "tipo": "única",
+        "options": [
+          "A) By providing code review standards and processes.",
+          "B) By providing change history and version control.",
+          "C) By providing device-awareness for mobile and desktops.",
+          "D) By providing an Agile process with default steps."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "101- What are two considerations for running a flow in debug mode?\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Input variables of type record cannot be passed into the flow.",
+          "B) Callouts to external systems are not executed when debugging a flow.",
+          "C) Clicking Pause or executing a Pause element closes the flow and ends debugging.",
+          "D) DML operations will be rolled back when the debugging ends."
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "102- A developer has a single custom controller class that works with a Visual Wizard to support creating and editing multiple sObjects. The wizard accepts data from user inputs across multiple Visualforce pages and from a parameter on the initial URL.\n\nWhich three statements are useful inside the unit test to effectively test the custom controller?\nChoose 3 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) ApexPages.currentPage().getParameters().put('input', 'TestValue');",
+          "B) String nextPage = controller.save().getUrl();",
+          "C) public ExtendedController(ApexPages.StandardController cntrl){}",
+          "D) Test.setCurrentPage(pageRef);",
+          "E) insert pageRef;"
+        ],
+        "correctAnswer": [0, 1, 3]
+      },
+      {
+        "question": "103- What are three considerations when using the @InvocableMethod annotation in Apex?",
+        "tipo": "múltiple",
+        "options": [
+          "A) A method using the @InvocableMethod annotation can have multiple input parameters.",
+          "B) A method using the @InvocableMethod annotation can be declared as Public or Global.",
+          "C) A method using the @InvocableMethod annotation must be declared as static.",
+          "D) Only one method using the @InvocableMethod annotation can be defined per Apex Class.",
+          "E) A method using the @InvocableMethod annotation must define a return value."
+        ],
+        "correctAnswer": [1, 2, 3]
+      },
+      {
+        "question": "104- What are two benefits of using External Ids?\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) An External ID can be a formula field to help create a unique key from two fields in Salesforce.",
+          "B) An External ID is indexed and can improve the performance of SOQL queries.",
+          "C) An External ID can be used with Salesforce Mobile to make external data visible.",
+          "D) An External ID field can be used to reference an ID from another external system."
+        ],
+        "correctAnswer": [1, 3]
+      },
+      {
+        "question": "105- What is the result of the following code snippet?\n\npublic void doWork(Account acct) {\n    for(Integer i = 0; i <= 200; i++) {\n        insert acct;\n    }\n}",
+        "tipo": "única",
+        "options": [
+          "A) 0 Accounts are inserted.",
+          "B) 1 Account is inserted.",
+          "C) 200 Accounts are inserted.",
+          "D) 201 Accounts are inserted."
+        ],
+        "correctAnswer": [1],
+        "image": "public/105.png"
+      },
+      {
+        "question": "106- Universal Containers wants to automatically assign new cases to the appropriate support representative based on the case origin. They have created a custom field on the Case object to store the support representative name.\n\nWhat is the best solution to assign the case to the appropriate support representative?",
+        "tipo": "única",
+        "options": [
+          "A) Use a trigger on the Case object.",
+          "B) Use a validation rule on the Case object.",
+          "C) Use an assignment flow element.",
+          "D) Use a formula field on the Case object."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "107- Which two are best practices when it comes to Aura component and application event handling?\n\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Handle low-level events in the event handler and re-fire them as higher-level events.",
+          "B) Use component events to communicate actions that should be handled at the application level.",
+          "C) Reuse the event logic in a component bundle, by putting the logic in the helper.",
+          "D) Try to use application events as opposed to component events."
+        ],
+        "correctAnswer": [0, 2]
+      },
+      {
+        "question": "108- An org has an existing flow that edits an Opportunity with an Update Records element. A developer must update the flow to also create a Contact and store the created Contact's ID on the Opportunity.\n\nWhich update must the developer make in the flow?",
+        "tipo": "única",
+        "options": [
+          "A) Add a new Roll Back Records element.",
+          "B) Add a new Create Records element.",
+          "C) Add a new Update Records element.",
+          "D) Add a new Get Records element."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "109- Universal Containers wants a list button to display a Visualforce page that allows users to edit multiple records.\n\nWhich Visualforce feature supports this requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Custom List Controller with recordSetVar page attribute.",
+          "B) Controller Extension and <apex:listButton> tag.",
+          "C) Standard controller and the recordSetVar page attribute.",
+          "D) Standard controller and Custom List Controller Extension."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "110- An Opportunity needs to have an amount rolled up from a custom object that is not in a master-detail relationship.\n\nHow can this be achieved?",
+        "tipo": "única",
+        "options": [
+          "A) Use the metadata API to create real-time roll-up summaries.",
+          "B) Write a trigger on the child object and use an aggregate function to sum the amount for all related child objects under the Opportunity.",
+          "C) Write a trigger on the Opportunity object and use an aggregate function to sum the amount for all related child objects under the Opportunity.",
+          "D) Use the Streaming API to create real-time roll-up summaries."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "111- What are three ways for a developer to execute tests in an org?\n\nChoose 3 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Metadata API.",
+          "B) Tooling API.",
+          "C) Setup Menu.",
+          "D) Salesforce DX.",
+          "E) Bulk API."
+        ],
+        "correctAnswer": [1, 2, 3]
+      },
+      {
+        "question": "112- A lead developer creates a virtual class called 'OrderRequest'. Consider the following code snippet:\n\npublic class CustomOrder{\n//code implementation\n}\n\nHow can a developer use the OrderRequest class within the CustomerOrder class?",
+        "tipo": "única",
+        "options": [
+          "A) @Implements(class='OrderRequest') public class CustomerOrder",
+          "B) public class CustomerOrder implements Order",
+          "C) public class CustomerOrder extends OrderRequest",
+          "D) @Extends(class='OrderRequest') public class CustomerOrder"
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "113- A developer is creating a page that allows users to create multiple Opportunities. The developer is asked to verify the current user's default Opportunity record type, and set certain default values based on the record type before inserting the record.\n\nHow can the developer find the current user's default record type?",
+        "tipo": "única",
+        "options": [
+          "A) Use the Schema.userInfo.Opportunity.getDefaultRecordType() method.",
+          "B) Query the Profile where the ID equals userInfo.getProfileID() and then use the profile.Opportunity.getDefaultRecordType() method.",
+          "C) Use Opportunity.SObjectType.getDescribe().getRecordTypeInfos() to get a list of record types, and iterate through them until isDefaultRecordTypeMapping() is true.",
+          "D) Create the opportunity and check the opportunity.recordType, which will have the record Id if the current user's default record type, before inserting."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "114- What should a developer use to fix a LWC bug in a sandbox?",
+        "tipo": "única",
+        "options": [
+          "A) Developer Console.",
+          "B) Force.com IDE.",
+          "C) VS Code.",
+          "D) Execute Anonymus."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "115- A developer must provide custom user interfaces when users edit a Contact in either Salesforce Classic or Lightning Experience.\n\nWhat should the developer use to override the Contact's Edit button and provide this functionality?",
+        "tipo": "única",
+        "options": [
+          "A) A Lightning component in Salesforce Classic and a Lightning component in Lightning Experience.",
+          "B) A Visualforce page in Salesforce Classic and a Lightning component in Lightning Experience.",
+          "C) A Visualforce page in Salesforce Classic and a Lightning page in Lightning Experience.",
+          "D) A Lightning page in Salesforce Classic and a Visualforce page in Lightning Experience."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "116- When importing and exporting data into Salesforce, which two statements are true?\n\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Bulk API can be used to import large data volumes in development environments without bypassing the storage limits.",
+          "B) Developer and Developer Pro sandboxes have different storage limits.",
+          "C) Bulk API can be used to bypass the storage limits when importing large data volumes in development environments.",
+          "D) Data import wizard is an application that is installed on your computer."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "117- A team of developers is working on a source-driven project that allows them to work independently with many different org configurations.\n\nWhich type of Salesforce orgs should they use for their development?",
+        "tipo": "única",
+        "options": [
+          "A) Scratch orgs.",
+          "B) Developer sandboxes.",
+          "C) Developer orgs.",
+          "D) Full copy sandboxes."
+        ],
+        "correctAnswer": [0]
+      },
+      {
+        "question": "118- Universal Containers wants to assess the advantages of declarative development versus programmatic customization for specific use cases in its Salesforce implementation.\n\nWhat are two characteristics of declarative development over programmatic customization?",
+        "tipo": "múltiple",
+        "options": [
+          "A) Declarative code logic does not require maintenance or review.",
+          "B) Declarative development can be done using Setup Menu.",
+          "C) Declarative development does not require Apex Test classes.",
+          "D) Declarative development has higher design limits and query limits."
+        ],
+        "correctAnswer": [1, 2]
+      },
+      {
+        "question": "119- What should a developer use to obtain the Id and Name of all the Leads, Accounts, and Contacts that have the company name 'Universal Containers'?",
+        "tipo": "única",
+        "options": [
+          "A) SELECT Lead.Id, Lead.Name, Account.Id, Account.Name, Contact.Id, Contact.Name FROM Lead, Account, Contact WHERE CompanyName = 'Universal Containers'",
+          "B) FIND 'Universal Containers' IN Name Fields RETURNING lead(id, name), account(id, name), contact(id, name)",
+          "C) SELECT lead(id, name), account(id, name), contact(id, name) FROM Lead, Account, Contact WHERE Name = 'Universal Containers'",
+          "D) FIND 'Universal Containers' IN CompanyName Fields RETURNING lead(id, name), account(id, name), contact(id, name)"
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "120- Universal Containers wants to back up all of the data and attachments in its Salesforce org once a month.\n\nWhich approach should a developer use to meet this requirement?",
+        "tipo": "única",
+        "options": [
+          "A) Create a Schedulable Apex Class.",
+          "B) Use the Data Loader command line.",
+          "C) Schedule a report.",
+          "D) Define a Data Export Scheduled job."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "121- What should a developer use to script the deployment and unit test execution as part of continuous integration?",
+        "tipo": "única",
+        "options": [
+          "A) Developer console.",
+          "B) VS Code.",
+          "C) Salesforce CLI.",
+          "D) Execute anonymous."
+        ],
+        "correctAnswer": [2]
+      },
+      {
+        "question": "122- Universal Containers decides to use exclusively declarative development to build out a new Salesforce application.\n\nWhich three options should be used to build out the database layer for the application?\n\nChoose 3 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Custom object and fields.",
+          "B) Roll up summaries.",
+          "C) Relationships.",
+          "D) Flows.",
+          "E) Triggers."
+        ],
+        "correctAnswer": [0, 1, 2]
+      },
+      {
+        "question": "123- Which two operations affect the number of times a trigger can fire?\n\nChoose 2 answers:",
+        "tipo": "múltiple",
+        "options": [
+          "A) Roll-up summary fields.",
+          "B) Criteria-based sharing calculations.",
+          "C) After-save-record-triggered flow.",
+          "D) Email messages."
+        ],
+        "correctAnswer": [0, 1]
+      },
+      {
+        "question": "124- A developer wrote Apex code that calls out to an external system using REST API.\n\nHow should a developer write the test to prove the code is working as intended?",
+        "tipo": "única",
+        "options": [
+          "A) Write a class that extends WebServiceMock.",
+          "B) Write a class that implements HTTPCalloutMock.",
+          "C) Write a class that implements WebServiceMock.",
+          "D) Write a class that implements HTTPCalloutMock."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+        "question": "125- A developer must troubleshoot to pinpoint the causes of performance issues when a custom page loads in their org.\n\nWhich tool should the developer use to troubleshoot query performance?",
+        "tipo": "única",
+        "options": [
+          "A) Setup Menu.",
+          "B) Visual Studio Code IDE",
+          "C) AppExchange",
+          "D) Developer Console."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "126- A PrimaryId__c custom field exists on the Candidate__c custom object. The field is used to store each candidate's id number and is marked as Unique in the schema definition.\n\nAs part of a data enrichment process, Universal Containers has a CSV file that contains data for all candidates in the system. The file contains each Candidate's primary id as a data point. Universal Containers wants to upload this information into Salesforce, while ensuring all data rows are correctly mapped to a candidate in the system.\n\nWhich technique should the developer implement to streamline the data upload?",
+        "tipo": "única",
+        "options": [
+          "A) Create a before save flow to correctly map the records.",
+          "B) Upload the CSV into a custom object related to Candidate__c.",
+          "C) Create a before insert trigger to correctly map the records.",
+          "D) Update the PrimaryId__c field definition to mark it as an External Id."
+        ],
+        "correctAnswer": [3]
+      },
+      {
+        "question": "127- A credit card company needs to implement the functionality for a service agent to process damaged or stolen credit cards. When the customers call in, the service agent must gather many pieces of information. A developer is tasked to implement this functionality.\n\nWhat should the developer use to satisfy this requirement in the most efficient manner?",
+        "tipo": "única",
+        "options": [
+          "A) Lightning component.",
+          "B) Screen-based flow.",
+          "C) Approval process.",
+          "D) Apex trigger."
+        ],
+        "correctAnswer": [1]
+      },
+      {
+    "question": "128- What are two considerations for deploying from sandbox to production?\n\nChoose two answers:",
+    "tipo": "múltiple",
+    "options": [
+      "A) All triggers must have at least one line of test coverage.",
+      "B) Should deploy during business hours to ensure feedback can be quickly addressed.",
+      "C) At least 75% of Apex code must be covered by unit tests.",
+      "D) Unit tests must have calls to the System.assert method."
+    ],
+    "correctAnswer": [0, 2]
+  }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function shuffleQuestions() {
+      for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+      }
+    }
+
+    function showQuestion(questionIndex) {
+      const question = questions[questionIndex];
+      const container = document.getElementById('question-container');
+      const feedback = document.getElementById('feedback');
+      const validateBtn = document.getElementById('validate-btn');
+      const nextBtn = document.getElementById('next-btn');
+      
+      feedback.innerHTML = '';
+      validateBtn.style.display = 'block';
+      nextBtn.style.display = 'none';
+
+      // Filtrar solo las opciones correctas
+      const correctOptions = question.correctAnswer.map(index => question.options[index]);
+
+      container.innerHTML = `
+        <div class="question">${question.question}</div>
+        ${question.image ? `<img src="${question.image}" alt="Question Image" style="max-width: 100%; margin-bottom: 15px;">` : ''}
+        <div class="options">
+          ${correctOptions.map((option, index) => 
+            `<label><input type="checkbox" class="answer" data-index="${index}"> ${option}</label><br>`
+          ).join('')}
+        </div>
+      `;
+
+      validateBtn.onclick = () => {
+        if (question.tipo === "múltiple") {
+          checkMultipleAnswer(question.correctAnswer);
+        } else {
+          checkSingleAnswer(question.correctAnswer);
+        }
+      };
+    }
+
+    function checkSingleAnswer(correctIndex) {
+      const feedback = document.getElementById('feedback');
+      const selectedAnswers = Array.from(document.querySelectorAll('.answer:checked')).map(answer => parseInt(answer.dataset.index));
+      if (selectedAnswers.length === 1 && selectedAnswers[0] === correctIndex[0]) {
+        score++;
+        feedback.innerHTML = `<p class="correct">¡Correcto! La respuesta es: ${questions[currentQuestionIndex].options[correctIndex[0]]}</p>`;
+      } else {
+        feedback.innerHTML = `<p class="incorrect">Incorrecto. La respuesta correcta es: ${questions[currentQuestionIndex].options[correctIndex[0]]}</p>`;
+      }
+      document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function checkMultipleAnswer(correctIndexes) {
+      const feedback = document.getElementById('feedback');
+      const selectedAnswers = Array.from(document.querySelectorAll('.answer:checked')).map(answer => parseInt(answer.dataset.index));
+      if (arraysEqual(selectedAnswers, correctIndexes)) {
+        score++;
+        feedback.innerHTML = `<p class="correct">¡Correcto! Las respuestas son: ${correctIndexes.map(index => questions[currentQuestionIndex].options[index]).join(', ')}</p>`;
+      } else {
+        feedback.innerHTML = `<p class="incorrect">Incorrecto. Las respuestas correctas son: ${correctIndexes.map(index => questions[currentQuestionIndex].options[index]).join(', ')}</p>`;
+      }
+      document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function arraysEqual(arr1, arr2) {
+      if (arr1.length !== arr2.length) return false;
+      arr1.sort();
+      arr2.sort();
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) return false;
+      }
+      return true;
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion(currentQuestionIndex);
+      } else {
+        const container = document.getElementById('question-container');
+        container.innerHTML = `<h2>¡Encuesta completada!</h2><p>Tu puntaje es: ${score} de ${questions.length}</p>`;
+        document.getElementById('next-btn').style.display = 'none';
+      }
+    }
+
+    function startSurvey() {
+      shuffleQuestions();
+      showQuestion(currentQuestionIndex);
+    }
+
+    window.onload = startSurvey;
+
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+  </script>
+
+</body>
+</html>

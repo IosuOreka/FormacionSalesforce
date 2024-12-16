@@ -99,7 +99,7 @@ const questions = [
       "c) Use the Code coverage Setup page.",
       "d) Use the ApexTestResults class."
     ],
-    "correctAnswer": [1]
+    "correctAnswer": [0]
   },
   {
     "question": "10- A deployment team wants to use a deployment script to automatically deploy to a sandbox during their development cycles. Which two tools can they use to run a script that deploys to a sandbox?",
@@ -243,7 +243,7 @@ const questions = [
       "C) Query the AsyncApexJob object",
       "D) View the Apex Status Page"
     ],
-    "correctAnswer": [0, 1]
+    "correctAnswer": [ 1, 2]
   },
   {
       "question": "23- Which Statement generates a list of Leads and Contacts that have a field with the phrase 'ACME'?",
@@ -289,7 +289,7 @@ const questions = [
       "C) Use an automatically launched Approval Process.",
       "D) Use an auto-response rule."
     ],
-    "correctAnswer": [1, 2]
+    "correctAnswer": [0, 1]
   },
   {
     "question": "27- When using Salesforce DX, what does a developer need to create and manage scratch orgs?",
@@ -702,7 +702,8 @@ const questions = [
       "c) public static void setBusinessUnitToEMEA(List&lt;Contact&gt; contacts){\n    for(Contact thisContact : contacts){\n        thisContact.Business__Unit__c = 'EMEA';\n    }\n    update contacts;",
       "d) public static void setBusinessUnitToEMEA(List&lt;Contact&gt; contacts){\n    contacts[0].Business__Unit__c = 'EMEA';\n    update contacts[0];"
     ],
-    "correctAnswer": [2]
+    "correctAnswer": [2],
+    "image": "public/63.png"
   },
   {
     "question": "64- Universal Containers recently transitioned from Classic to Lightning Experience. One of its business processes requires certain values from the Opportunity object to be sent via an HTTP REST callout to its external order management system when the user presses a custom button on the Opportunity detail page. Example values are as follows:\nName\nAccount\nAccount\nWhich two methods should the developer implement to fulfill the business requirement?",
@@ -713,7 +714,7 @@ const questions = [
       "C) Create an after update trigger on the Opportunity object that calls a helper method using @Future(Callout=true) to perform the HTTP REST callout.",
       "D) Create a Lightning component quick action that performs the HTTP REST callout, and use a Lightning Action to expose the component on the Opportunity detail page."
     ],
-    "correctAnswer": [3]
+    "correctAnswer": [ 0, 3]
   },
   {
     "question": "65- A developer completed modifications to a customized feature that is comprised of two elements:\nApex trigger\nTrigger handler Apex class\nWhat are two factors that the developer must take into account to properly deploy the modification to the production environment?",
